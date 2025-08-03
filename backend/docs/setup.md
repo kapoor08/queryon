@@ -251,27 +251,36 @@ sqlalchemy==2.0.35
 psycopg[binary]==3.1.13
 alembic==1.13.0
 
-# Redis and Caching
-redis==5.0.1
-hiredis==2.2.3
+# Redis and Caching (UPDATED for async support)
+redis[hiredis]==5.0.1
+aioredis==2.0.1  # Alternative async Redis client if needed
 
 # Background Tasks
 celery==5.3.4
 
-# AI/ML Libraries
-langchain==0.0.340
+# AI/ML Libraries (UPDATED)
+# Removed old langchain, updated Pinecone
+pinecone-client==3.0.3  # UPDATED to latest version
 openai==1.3.5
-pinecone-client==2.2.4
+sentence-transformers==2.2.2  # ADDED for embedding model
+scikit-learn==1.3.2  # ADDED for cosine similarity
+numpy==1.24.3  # ADDED dependency for embeddings
+torch==2.1.0  # ADDED for sentence-transformers (CPU version)
 
-# Vector Search & Embeddings
-sentence-transformers==2.2.2
-scikit-learn==1.3.2
+# HTTP Client (ADDED for async requests)
+aiohttp==3.9.1  # ADDED for async HTTP requests
+aiofiles==23.2.0  # ADDED for async file operations
 
 # Document Processing
 pypdf==3.17.1
 python-docx==1.1.0
 beautifulsoup4==4.12.2
-requests==2.31.0
+requests==2.31.0  # Keep for backward compatibility
+lxml==4.9.3  # ADDED for better HTML parsing
+
+# Text Processing (ADDED)
+langchain-text-splitters==0.0.1  # ADDED for text chunking
+unstructured==0.11.6  # ADDED for advanced document processing
 
 # Utilities
 pydantic==2.5.0
@@ -280,8 +289,13 @@ python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 python-dotenv==1.0.0
 
+# Validation and Security (ADDED)
+email-validator==2.1.0  # ADDED for email validation
+cryptography==41.0.7  # ADDED for enhanced security
+
 # Monitoring and Logging
 sentry-sdk[fastapi]==1.38.0
+structlog==23.2.0  # ADDED for structured logging
 
 # Development
 pytest==7.4.3
@@ -290,6 +304,7 @@ httpx==0.25.2
 black==23.11.0
 isort==5.12.0
 flake8==6.1.0
+pytest-mock==3.12.0  # ADDED for better testing
 
 # Production
 gunicorn==21.2.0
