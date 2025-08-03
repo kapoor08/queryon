@@ -1,6 +1,7 @@
 """
 Database configuration and session management
 """
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
@@ -32,6 +33,7 @@ AsyncSessionLocal = sessionmaker(
     autoflush=False,
 )
 
+
 def get_db():
     """Get database session"""
     db = SessionLocal()
@@ -39,6 +41,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 async def get_async_db():
     """Get async database session"""
