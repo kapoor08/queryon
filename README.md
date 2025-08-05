@@ -1,4 +1,4 @@
-# Widget Talk
+# Queryon
 
 ### Overview
 
@@ -16,7 +16,6 @@ The widget can be injected into any website using a simple `<script>` tag:
 
 <!-- jsDelivr CDN -->
 <script src="https://cdn.jsdelivr.net/gh/johndoe/chat-widget/dist/chat-widget.js"></script>
-
 ```
 
 ---
@@ -26,9 +25,9 @@ The widget can be injected into any website using a simple `<script>` tag:
 - **Frontend:** React (Vite)
 - **Backend:** FastAPI
 - **AI Stack:**
-    - Ollama (LLM)
-    - LangChain (Prompt orchestration)
-    - Pinecone (Vector DB for semantic search)
+  - Ollama (LLM)
+  - LangChain (Prompt orchestration)
+  - Pinecone (Vector DB for semantic search)
 
 ---
 
@@ -45,9 +44,9 @@ The widget can be injected into any website using a simple `<script>` tag:
 Accessible via `/admin` routes:
 
 - Admins (product owners) can:
-    - Upload documents
-    - Input FAQs
-    - Feed product-specific data
+  - Upload documents
+  - Input FAQs
+  - Feed product-specific data
 - This data is used to train the AI using Langchain & Pinecone.
 - Once trained, a custom widget can be deployed using the assigned API Key.
 
@@ -75,14 +74,13 @@ Accessible via `/admin` routes:
 
 Each plan comes with feature-based limitations:
 
-| Plan | Daily Query Limit | Max Widgets | Support | Price |
-| --- | --- | --- | --- | --- |
-| **Starter** | 50 queries | 1 | Email | $9/mo |
-| **Pro** | 500 queries | 3 | Priority | $29/mo |
-| **Enterprise** | Unlimited | 10+ | Dedicated | $99/mo |
+| Plan           | Daily Query Limit | Max Widgets | Support   | Price  |
+| -------------- | ----------------- | ----------- | --------- | ------ |
+| **Starter**    | 50 queries        | 1           | Email     | $9/mo  |
+| **Pro**        | 500 queries       | 3           | Priority  | $29/mo |
+| **Enterprise** | Unlimited         | 10+         | Dedicated | $99/mo |
 
 > Additional usage may require overage fees or upgrades.
-> 
 
 ---
 
