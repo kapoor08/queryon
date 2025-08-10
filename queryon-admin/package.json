@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "prepare": "[ -d .git ] && husky install || echo 'Skipping Husky in CI'"
+    "prepare": "husky"
   },
   "dependencies": {
     "@google-cloud/translate": "^9.2.0",
