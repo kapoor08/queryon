@@ -1,16 +1,7 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/api/translate",
-        destination: "/api/translate",
-      },
-    ];
-  },
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  // App Router is stable, no experimental flag needed
 };
 
-module.exports = nextConfig;
+export default nextConfig;
