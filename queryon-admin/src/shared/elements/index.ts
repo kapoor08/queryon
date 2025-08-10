@@ -1,3 +1,10 @@
 export { default as CommonDropdown } from "./common-dropdown";
 export { default as TranslatableText } from "./translatable-text";
 export { default as TranslationLoadingIndicator } from "./translation-loading-indicator";
+export { default as TextInput } from "./shared-text-input";
+export { default as NameInput } from "./shared-name-input";
+export { default as PasswordInput } from "./shared-password-input";
+export { default as SharedCheckbox } from "./shared-checkbox";
+export { default as SharedSelect } from "./shared-select-input";
+export { default as SharedTextarea } from "./shared-textarea-input";
+export { default as PhoneInput } from "./shared-phone-input";
