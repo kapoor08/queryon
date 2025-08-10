@@ -31,3 +31,11 @@ export interface ITestimonials {
   avatar: string;
   rating: number;
 }
+
+export interface BaseInputProps {
+  label?: string;
+  error?: string;
+  className?: string;
+  containerClassName?: string;
+  required?: boolean;
+}
