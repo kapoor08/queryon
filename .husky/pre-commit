@@ -1,0 +1,13 @@
+#!/bin/sh
+echo "Pre-commit hook running from monorepo root"
+echo "Changing to queryon-admin directory..."
+
+cd queryon-admin
+
+echo "Running lint-staged..."
+npx lint-staged
+
+echo "Running build..."
+npm run build
+
+echo "Pre-commit hook completed successfully!"
