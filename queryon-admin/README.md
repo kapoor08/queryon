@@ -21,3 +21,4 @@
 - (uk) Ukrainian
 - (he) Hebrew
 - Many more added using Google Translation API.
+- Husky Lint-Staged installed.

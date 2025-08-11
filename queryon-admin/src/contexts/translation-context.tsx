@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   createContext,
@@ -9,8 +9,8 @@ import {
   useMemo,
   useEffect,
   useRef,
-} from "react";
-import { getLanguageFromCookie, setLanguageCookie } from "@/lib/cookie";
+} from 'react';
+import { getLanguageFromCookie, setLanguageCookie } from '@/lib/cookie';
 
 interface TranslationEntry {
   id: string;
@@ -32,22 +32,26 @@ interface TranslationContextType {
   isInitialized: boolean;
 }
 
-const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
+const TranslationContext = createContext<TranslationContextType | undefined>(
+  undefined
+);
 
 export function TranslationProvider({ children }: { children: ReactNode }) {
-  const [currentLanguage, setCurrentLanguageState] = useState("en");
+  const [currentLanguage, setCurrentLanguageState] = useState('en');
   const [isTranslating, setIsTranslating] = useState(false);
-  const [translationCache, setTranslationCache] = useState(() => new Map<string, string>());
+  const [translationCache, setTranslationCache] = useState(
+    () => new Map<string, string>()
+  );
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Batching mechanism
   const pendingTranslations = useRef(new Map<string, TranslationEntry>());
   const batchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const BATCH_DELAY = 100; // 100ms delay to collect multiple requests
+  const BATCH_DELAY = 100;
 
   // Initialize language from cookie on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       const savedLanguage = getLanguageFromCookie();
       setCurrentLanguageState(savedLanguage);
       setIsInitialized(true);
@@ -82,15 +86,15 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
     setIsTranslating(true);
 
     try {
-      const response = await fetch("/api/translate", {
-        method: "POST",
+      const response = await fetch('/api/translate', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           texts: textsToTranslate,
           targetLanguage: currentLanguage,
-          action: "translate",
+          action: 'translate',
         }),
       });
 
@@ -119,7 +123,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
 
       setTranslationCache(newCache);
     } catch (error) {
-      console.error("Batch translation error:", error);
+      console.error('Batch translation error:', error);
 
       // Resolve with original texts on error
       entries.forEach((entry) => {
@@ -137,7 +141,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
   const registerTextForTranslation = useCallback(
     (text: string): Promise<string> => {
       // Return immediately if language is English
-      if (currentLanguage === "en") {
+      if (currentLanguage === 'en') {
         return Promise.resolve(text);
       }
 
@@ -169,7 +173,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         }, BATCH_DELAY);
       });
     },
-    [currentLanguage, translationCache, getCacheKey, processBatch],
+    [currentLanguage, translationCache, getCacheKey, processBatch]
   );
 
   // Memoize translateText to prevent infinite re-renders
@@ -177,7 +181,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
     async (text: string, targetLang?: string): Promise<string> => {
       const targetLanguage = targetLang || currentLanguage;
 
-      if (targetLanguage === "en") return text;
+      if (targetLanguage === 'en') return text;
       if (!text.trim()) return text;
 
       // Check cache first
@@ -187,15 +191,15 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
 
       setIsTranslating(true);
       try {
-        const response = await fetch("/api/translate", {
-          method: "POST",
+        const response = await fetch('/api/translate', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             text,
             targetLanguage,
-            action: "translate",
+            action: 'translate',
           }),
         });
 
@@ -207,13 +211,13 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
 
         return translation;
       } catch (error) {
-        console.error("Translation error:", error);
+        console.error('Translation error:', error);
         return text;
       } finally {
         setIsTranslating(false);
       }
     },
-    [currentLanguage, getCacheKey, translationCache],
+    [currentLanguage, getCacheKey, translationCache]
   );
 
   // Memoize translateTexts to prevent infinite re-renders
@@ -221,7 +225,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
     async (texts: string[], targetLang?: string): Promise<string[]> => {
       const targetLanguage = targetLang || currentLanguage;
 
-      if (targetLanguage === "en") return texts;
+      if (targetLanguage === 'en') return texts;
       if (!texts.length) return texts;
 
       // Check cache for all texts
@@ -248,15 +252,15 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
 
       setIsTranslating(true);
       try {
-        const response = await fetch("/api/translate", {
-          method: "POST",
+        const response = await fetch('/api/translate', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             texts: textsToTranslate,
             targetLanguage,
-            action: "translate",
+            action: 'translate',
           }),
         });
 
@@ -275,7 +279,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         setTranslationCache(newCache);
         return cacheResults;
       } catch (error) {
-        console.error("Translation error:", error);
+        console.error('Translation error:', error);
         // Fill missing translations with original texts
         indicesToTranslate.forEach((originalIndex, translationIndex) => {
           cacheResults[originalIndex] = textsToTranslate[translationIndex];
@@ -285,7 +289,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         setIsTranslating(false);
       }
     },
-    [currentLanguage, getCacheKey, translationCache],
+    [currentLanguage, getCacheKey, translationCache]
   );
 
   // Memoize context value to prevent unnecessary re-renders
@@ -311,16 +315,20 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
       translationCache,
       isInitialized,
       clearCache,
-    ],
+    ]
   );
 
-  return <TranslationContext.Provider value={contextValue}>{children}</TranslationContext.Provider>;
+  return (
+    <TranslationContext.Provider value={contextValue}>
+      {children}
+    </TranslationContext.Provider>
+  );
 }
 
 export const useTranslation = () => {
   const context = useContext(TranslationContext);
   if (context === undefined) {
-    throw new Error("useTranslation must be used within a TranslationProvider");
+    throw new Error('useTranslation must be used within a TranslationProvider');
   }
   return context;
 };
