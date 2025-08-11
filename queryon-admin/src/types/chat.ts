@@ -1,14 +1,14 @@
-export type MessageStatus = "sending" | "sent" | "delivered" | "read";
+export type MessageStatus = 'sending' | 'sent' | 'delivered' | 'read';
 
 export type ChatMessage =
   | {
-      type: "received";
+      type: 'received';
       message: string;
       timestamp: string;
       status: MessageStatus;
     }
   | {
-      type: "sent";
+      type: 'sent';
       message: string;
       timestamp: string;
       status: MessageStatus;

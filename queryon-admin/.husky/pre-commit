@@ -1,23 +1,10 @@
 #!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-# Exit immediately if any command fails
-set -e
-
-echo "Running lint-staged..."
+echo "🔍 Running lint-staged..."
 npx lint-staged
 
-if [ $? -ne 0 ]; then
-  echo "Lint-staged failed. Aborting commit."
-  exit 1
-fi
-
-echo "Running build..."
+echo "🏗️ Running build..."
 npm run build
 
-if [ $? -ne 0 ]; then
-  echo "Build failed. Aborting commit."
-  exit 1
-fi
-
-echo "Pre-commit hook completed successfully."
-echo "Commit successful!"
+echo "✅ Pre-commit hook completed successfully!"
