@@ -1,13 +1,17 @@
-#!/bin/sh
-echo "Pre-commit hook running from monorepo root"
-echo "Changing to queryon-admin directory..."
+#!/usr/bin/env sh
+set -e
 
 cd queryon-admin
 
 echo "Running lint-staged..."
 npx lint-staged
 
-echo "Running build..."
-npm run build
+# Only build if TypeScript/React files changed
+if git diff --cached --name-only | grep -qE '\.(ts|tsx|js|jsx)$'; then
+  echo "Source code changed. Running build..."
+  npm run build
+else
+  echo "No source code changes. Skipping build."
+fi
 
 echo "Pre-commit hook completed successfully!"
