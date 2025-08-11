@@ -20,3 +20,4 @@
 - (id) Indonesian
 - (uk) Ukrainian
 - (he) Hebrew
+- Many more added using Google Translation API.
