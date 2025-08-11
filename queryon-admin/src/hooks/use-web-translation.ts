@@ -32,18 +32,11 @@ export function useWebsiteTranslation() {
         // Set timeout to process all collected texts
         collectionTimeout = setTimeout(async () => {
           if (textRegistry.size > 0) {
-            console.log(
-              `[WEBSITE] Translating ${textRegistry.size} unique texts to ${currentLanguage}`
-            );
-
             const textsArray = Array.from(textRegistry);
 
             try {
               // Translate all collected texts in one batch
               await translateTexts(textsArray);
-              console.log(
-                `[WEBSITE] Completed translation of ${textsArray.length} texts`
-              );
             } catch (error) {
               console.error("Website translation error:", error);
             }
@@ -56,7 +49,7 @@ export function useWebsiteTranslation() {
         }, 200); // 200ms delay to collect all texts
       }
     },
-    [currentLanguage, translateTexts]
+    [currentLanguage, translateTexts],
   );
 
   // Clear registry when language changes

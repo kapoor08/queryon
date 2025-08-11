@@ -32,16 +32,12 @@ interface TranslationContextType {
   isInitialized: boolean;
 }
 
-const TranslationContext = createContext<TranslationContextType | undefined>(
-  undefined
-);
+const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
 
 export function TranslationProvider({ children }: { children: ReactNode }) {
   const [currentLanguage, setCurrentLanguageState] = useState("en");
   const [isTranslating, setIsTranslating] = useState(false);
-  const [translationCache, setTranslationCache] = useState(
-    () => new Map<string, string>()
-  );
+  const [translationCache, setTranslationCache] = useState(() => new Map<string, string>());
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Batching mechanism
@@ -53,7 +49,6 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedLanguage = getLanguageFromCookie();
-      console.log("Loading language from cookie:", savedLanguage);
       setCurrentLanguageState(savedLanguage);
       setIsInitialized(true);
     }
@@ -61,7 +56,6 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
 
   // Custom setter that updates both state and cookie
   const setCurrentLanguage = useCallback((language: string) => {
-    console.log("Setting language:", language);
     setCurrentLanguageState(language);
     setLanguageCookie(language);
 
@@ -84,10 +78,6 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
 
     const entries = Array.from(pendingTranslations.current.values());
     const textsToTranslate = entries.map((entry) => entry.originalText);
-
-    console.log(
-      `[BATCH] Processing ${textsToTranslate.length} translations for language: ${currentLanguage}`
-    );
 
     setIsTranslating(true);
 
@@ -179,7 +169,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         }, BATCH_DELAY);
       });
     },
-    [currentLanguage, translationCache, getCacheKey, processBatch]
+    [currentLanguage, translationCache, getCacheKey, processBatch],
   );
 
   // Memoize translateText to prevent infinite re-renders
@@ -223,7 +213,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         setIsTranslating(false);
       }
     },
-    [currentLanguage, getCacheKey, translationCache]
+    [currentLanguage, getCacheKey, translationCache],
   );
 
   // Memoize translateTexts to prevent infinite re-renders
@@ -258,10 +248,6 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
 
       setIsTranslating(true);
       try {
-        console.log(
-          `[BATCH] Translating ${textsToTranslate.length} texts to ${targetLanguage}`
-        );
-
         const response = await fetch("/api/translate", {
           method: "POST",
           headers: {
@@ -299,7 +285,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         setIsTranslating(false);
       }
     },
-    [currentLanguage, getCacheKey, translationCache]
+    [currentLanguage, getCacheKey, translationCache],
   );
 
   // Memoize context value to prevent unnecessary re-renders
@@ -325,14 +311,10 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
       translationCache,
       isInitialized,
       clearCache,
-    ]
+    ],
   );
 
-  return (
-    <TranslationContext.Provider value={contextValue}>
-      {children}
-    </TranslationContext.Provider>
-  );
+  return <TranslationContext.Provider value={contextValue}>{children}</TranslationContext.Provider>;
 }
 
 export const useTranslation = () => {

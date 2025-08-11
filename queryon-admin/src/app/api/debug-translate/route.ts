@@ -138,28 +138,19 @@ export async function POST(request: NextRequest) {
     // Validate action
     if (!action) {
       debugLog("ERROR: Missing action parameter");
-      return NextResponse.json(
-        { error: "Action is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Action is required" }, { status: 400 });
     }
 
     if (!["translate", "detect"].includes(action)) {
       debugLog("ERROR: Invalid action:", action);
-      return NextResponse.json(
-        { error: `Invalid action: ${action}` },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: `Invalid action: ${action}` }, { status: 400 });
     }
 
     if (action === "translate") {
       // Validate target language
       if (!targetLanguage) {
         debugLog("ERROR: Missing target language");
-        return NextResponse.json(
-          { error: "Target language is required" },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "Target language is required" }, { status: 400 });
       }
 
       // Normalize language codes
@@ -173,8 +164,7 @@ export async function POST(request: NextRequest) {
         normalizedSource,
         targetSupported: SUPPORTED_LANGUAGES.includes(normalizedTarget),
         sourceSupported:
-          normalizedSource === "auto" ||
-          SUPPORTED_LANGUAGES.includes(normalizedSource),
+          normalizedSource === "auto" || SUPPORTED_LANGUAGES.includes(normalizedSource),
       });
 
       // Validate language codes
@@ -185,20 +175,17 @@ export async function POST(request: NextRequest) {
             error: `Unsupported target language: ${targetLanguage}`,
             supportedLanguages: SUPPORTED_LANGUAGES.slice(0, 20), // Show first 20 for reference
           },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
-      if (
-        normalizedSource !== "auto" &&
-        !SUPPORTED_LANGUAGES.includes(normalizedSource)
-      ) {
+      if (normalizedSource !== "auto" && !SUPPORTED_LANGUAGES.includes(normalizedSource)) {
         debugLog("ERROR: Unsupported source language:", normalizedSource);
         return NextResponse.json(
           {
             error: `Unsupported source language: ${sourceLanguage}`,
           },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -209,10 +196,7 @@ export async function POST(request: NextRequest) {
         // Validate text
         if (typeof text !== "string") {
           debugLog("ERROR: Text must be a string, got:", typeof text);
-          return NextResponse.json(
-            { error: "Text must be a string" },
-            { status: 400 }
-          );
+          return NextResponse.json({ error: "Text must be a string" }, { status: 400 });
         }
 
         if (!text.trim()) {
@@ -226,19 +210,12 @@ export async function POST(request: NextRequest) {
           debugLog("Text encoding test passed, length:", testEncode.length);
         } catch (encodeError) {
           debugLog("ERROR: Text encoding failed:", encodeError);
-          return NextResponse.json(
-            { error: "Invalid text encoding" },
-            { status: 400 }
-          );
+          return NextResponse.json({ error: "Invalid text encoding" }, { status: 400 });
         }
 
         try {
           debugLog("Calling translateText function...");
-          const translation = await translateText(
-            text,
-            normalizedTarget,
-            normalizedSource
-          );
+          const translation = await translateText(text, normalizedTarget, normalizedSource);
 
           debugLog("Translation completed:", {
             original: text.substring(0, 30),
@@ -261,11 +238,9 @@ export async function POST(request: NextRequest) {
             {
               error: "Translation failed",
               details:
-                translationError instanceof Error
-                  ? translationError.message
-                  : "Unknown error",
+                translationError instanceof Error ? translationError.message : "Unknown error",
             },
-            { status: 500 }
+            { status: 500 },
           );
         }
       }
@@ -277,25 +252,18 @@ export async function POST(request: NextRequest) {
         // Validate texts array
         for (let i = 0; i < texts.length; i++) {
           if (typeof texts[i] !== "string") {
-            debugLog(
-              `ERROR: Text at index ${i} is not a string:`,
-              typeof texts[i]
-            );
+            debugLog(`ERROR: Text at index ${i} is not a string:`, typeof texts[i]);
             return NextResponse.json(
               {
                 error: `Text at index ${i} must be a string`,
               },
-              { status: 400 }
+              { status: 400 },
             );
           }
         }
 
         try {
-          const translations = await translateTexts(
-            texts,
-            normalizedTarget,
-            normalizedSource
-          );
+          const translations = await translateTexts(texts, normalizedTarget, normalizedSource);
 
           return NextResponse.json({
             translations,
@@ -309,11 +277,9 @@ export async function POST(request: NextRequest) {
             {
               error: "Bulk translation failed",
               details:
-                translationError instanceof Error
-                  ? translationError.message
-                  : "Unknown error",
+                translationError instanceof Error ? translationError.message : "Unknown error",
             },
-            { status: 500 }
+            { status: 500 },
           );
         }
       }
@@ -321,7 +287,7 @@ export async function POST(request: NextRequest) {
       debugLog("ERROR: Neither text nor texts provided");
       return NextResponse.json(
         { error: "Either 'text' or 'texts' parameter is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -330,16 +296,13 @@ export async function POST(request: NextRequest) {
         debugLog("ERROR: Text required for detection");
         return NextResponse.json(
           { error: "Text parameter is required for detection" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
       if (typeof text !== "string") {
         debugLog("ERROR: Detection text must be string, got:", typeof text);
-        return NextResponse.json(
-          { error: "Text must be a string" },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "Text must be a string" }, { status: 400 });
       }
 
       try {
@@ -350,12 +313,9 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             error: "Language detection failed",
-            details:
-              detectionError instanceof Error
-                ? detectionError.message
-                : "Unknown error",
+            details: detectionError instanceof Error ? detectionError.message : "Unknown error",
           },
-          { status: 500 }
+          { status: 500 },
         );
       }
     }
@@ -363,10 +323,7 @@ export async function POST(request: NextRequest) {
     debugLog("General API error:", error);
 
     if (error instanceof SyntaxError) {
-      return NextResponse.json(
-        { error: "Invalid JSON in request body" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid JSON in request body" }, { status: 400 });
     }
 
     return NextResponse.json(
@@ -374,7 +331,7 @@ export async function POST(request: NextRequest) {
         error: "Internal server error",
         details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

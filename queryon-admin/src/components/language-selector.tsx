@@ -35,18 +35,11 @@ const languages = [
 ];
 
 export default function LanguageSelector() {
-  const { currentLanguage, setCurrentLanguage, isTranslating, isInitialized } =
-    useTranslation();
+  const { currentLanguage, setCurrentLanguage, isTranslating, isInitialized } = useTranslation();
 
   const currentLang = languages.find((lang) => lang.code === currentLanguage);
 
   const handleLanguageChange = (newLanguage: string) => {
-    console.log(
-      "Language selector: changing from",
-      currentLanguage,
-      "to",
-      newLanguage
-    );
     setCurrentLanguage(newLanguage);
   };
 
@@ -61,11 +54,7 @@ export default function LanguageSelector() {
 
   return (
     <div className="flex items-center gap-2">
-      <Select
-        value={currentLanguage}
-        onValueChange={handleLanguageChange}
-        disabled={isTranslating}
-      >
+      <Select value={currentLanguage} onValueChange={handleLanguageChange} disabled={isTranslating}>
         <SelectTrigger className="w-[150px] h-9 cursor-pointer">
           <div className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
@@ -73,9 +62,7 @@ export default function LanguageSelector() {
               <div className="flex items-center gap-1">
                 <span>{currentLang?.flag}</span>
                 <span className="hidden sm:inline">{currentLang?.name}</span>
-                <span className="sm:hidden">
-                  {currentLang?.code.toUpperCase()}
-                </span>
+                <span className="sm:hidden">{currentLang?.code.toUpperCase()}</span>
               </div>
             </SelectValue>
           </div>
@@ -86,9 +73,7 @@ export default function LanguageSelector() {
               <div className="flex items-center gap-2 cursor-pointer">
                 <span>{lang.flag}</span>
                 <span>{lang.name}</span>
-                <span className="text-xs text-muted-foreground">
-                  ({lang.code})
-                </span>
+                <span className="text-xs text-muted-foreground">({lang.code})</span>
               </div>
             </SelectItem>
           ))}

@@ -19,10 +19,7 @@ export async function GET(request: NextRequest) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function log(message: string, data?: any) {
-    const logEntry = data
-      ? `${message} ${JSON.stringify(data, null, 2)}`
-      : message;
-    console.log(logEntry);
+    const logEntry = data ? `${message} ${JSON.stringify(data, null, 2)}` : message;
     logs.push(logEntry);
   }
 
@@ -35,19 +32,15 @@ export async function GET(request: NextRequest) {
     // Check environment variables
     log("Environment Variables:");
     log("- GOOGLE_CLOUD_PROJECT_ID:", process.env.GOOGLE_CLOUD_PROJECT_ID);
-    log(
-      "- GOOGLE_SERVICE_ACCOUNT_KEY exists:",
-      !!process.env.GOOGLE_SERVICE_ACCOUNT_KEY
-    );
+    log("- GOOGLE_SERVICE_ACCOUNT_KEY exists:", !!process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
 
     if (!process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
       return NextResponse.json(
         {
-          error:
-            "GOOGLE_SERVICE_ACCOUNT_KEY not found in environment variables",
+          error: "GOOGLE_SERVICE_ACCOUNT_KEY not found in environment variables",
           logs,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -66,7 +59,7 @@ export async function GET(request: NextRequest) {
           error: "Invalid service account key format",
           logs,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -105,9 +98,7 @@ export async function GET(request: NextRequest) {
       // Test language detection
       log("Testing language detection for 'Bonjour'");
       const [detection] = await translate.detect("Bonjour");
-      const detectedLang = Array.isArray(detection)
-        ? detection[0].language
-        : detection.language;
+      const detectedLang = Array.isArray(detection) ? detection[0].language : detection.language;
       log("Detection result:", detectedLang);
 
       return NextResponse.json({
@@ -150,27 +141,24 @@ export async function GET(request: NextRequest) {
         if (gcError.code === 403) {
           return NextResponse.json(
             {
-              error:
-                "Permission Denied - Service account lacks required permissions",
-              solution:
-                "Add 'Cloud Translation API User' role to your service account",
+              error: "Permission Denied - Service account lacks required permissions",
+              solution: "Add 'Cloud Translation API User' role to your service account",
               serviceAccountEmail: serviceAccountKey?.client_email,
               logs,
             },
-            { status: 403 }
+            { status: 403 },
           );
         }
 
         if (gcError.code === 400) {
           return NextResponse.json(
             {
-              error:
-                "Bad Request - API might not be enabled or invalid parameters",
+              error: "Bad Request - API might not be enabled or invalid parameters",
               solution: "Enable Cloud Translation API in Google Cloud Console",
               projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
               logs,
             },
-            { status: 400 }
+            { status: 400 },
           );
         }
 
@@ -181,20 +169,19 @@ export async function GET(request: NextRequest) {
               solution: "Check your API usage limits in Google Cloud Console",
               logs,
             },
-            { status: 429 }
+            { status: 429 },
           );
         }
 
         if (apiError.message?.includes("billing")) {
           return NextResponse.json(
             {
-              error:
-                "Billing Required - Enable billing for your Google Cloud project",
+              error: "Billing Required - Enable billing for your Google Cloud project",
               solution: "Enable billing in Google Cloud Console",
               projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
               logs,
             },
-            { status: 402 }
+            { status: 402 },
           );
         }
       }
@@ -202,11 +189,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           error: "Google Cloud API test failed",
-          details:
-            apiError instanceof Error ? apiError.message : "Unknown error",
+          details: apiError instanceof Error ? apiError.message : "Unknown error",
           logs,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
   } catch (error) {
@@ -217,7 +203,7 @@ export async function GET(request: NextRequest) {
         details: error instanceof Error ? error.message : "Unknown error",
         logs,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

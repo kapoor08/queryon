@@ -23,9 +23,7 @@ const getTranslateClient = (): Translate | null => {
   debugLog("Starting client initialization...");
 
   if (!process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
-    debugLog(
-      "ERROR: GOOGLE_SERVICE_ACCOUNT_KEY environment variable is not set"
-    );
+    debugLog("ERROR: GOOGLE_SERVICE_ACCOUNT_KEY environment variable is not set");
     return null;
   }
 
@@ -35,9 +33,7 @@ const getTranslateClient = (): Translate | null => {
   }
 
   try {
-    const serviceAccountKey = JSON.parse(
-      process.env.GOOGLE_SERVICE_ACCOUNT_KEY
-    );
+    const serviceAccountKey = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
 
     debugLog("Service account details:", {
       email: serviceAccountKey.client_email,
@@ -89,7 +85,7 @@ try {
 export async function translateText(
   text: string,
   targetLanguage: string,
-  sourceLanguage: string = "auto"
+  sourceLanguage: string = "auto",
 ): Promise<string> {
   debugLog("=== Translation Request Started ===");
   debugLog("Input parameters:", {
@@ -122,10 +118,7 @@ export async function translateText(
   }
 
   // Don't translate if target language is English and source is auto/en
-  if (
-    targetLanguage === "en" &&
-    (sourceLanguage === "auto" || sourceLanguage === "en")
-  ) {
+  if (targetLanguage === "en" && (sourceLanguage === "auto" || sourceLanguage === "en")) {
     debugLog("Target is English and source is auto/en, returning original");
     return text;
   }
@@ -168,9 +161,7 @@ export async function translateText(
     }
 
     if (translation === text) {
-      debugLog(
-        "INFO: Translation is identical to original text (this may be normal)"
-      );
+      debugLog("INFO: Translation is identical to original text (this may be normal)");
     }
 
     debugLog("=== Translation Request Completed Successfully ===");
@@ -193,7 +184,7 @@ export async function translateText(
       // Check for specific error codes and provide helpful messages
       if (gcError.code === 403) {
         debugLog(
-          "ERROR: Permission denied - Service account lacks 'Cloud Translation API User' role"
+          "ERROR: Permission denied - Service account lacks 'Cloud Translation API User' role",
         );
       } else if (gcError.code === 400) {
         debugLog("ERROR: Bad request - Check language codes and input text");
@@ -205,9 +196,7 @@ export async function translateText(
       } else if (gcError.code === 429) {
         debugLog("ERROR: Quota exceeded - API rate limits reached");
       } else if (gcError.code === 401) {
-        debugLog(
-          "ERROR: Authentication failed - Check service account credentials"
-        );
+        debugLog("ERROR: Authentication failed - Check service account credentials");
       }
     }
 
@@ -218,7 +207,7 @@ export async function translateText(
 export async function translateTexts(
   texts: string[],
   targetLanguage: string,
-  sourceLanguage: string = "auto"
+  sourceLanguage: string = "auto",
 ): Promise<string[]> {
   debugLog("=== Bulk Translation Request ===", {
     textsCount: texts.length,
@@ -252,10 +241,7 @@ export async function translateTexts(
       translateOptions.from = sourceLanguage.toLowerCase();
     }
 
-    const [translations] = await translate.translate(
-      filteredTexts,
-      translateOptions
-    );
+    const [translations] = await translate.translate(filteredTexts, translateOptions);
 
     const result = Array.isArray(translations) ? translations : [translations];
 
@@ -297,9 +283,7 @@ export async function detectLanguage(text: string): Promise<string> {
 
   try {
     const [detection] = await translate.detect(text);
-    const language = Array.isArray(detection)
-      ? detection[0].language
-      : detection.language;
+    const language = Array.isArray(detection) ? detection[0].language : detection.language;
 
     debugLog("Language detected:", language);
     return language || "en";
