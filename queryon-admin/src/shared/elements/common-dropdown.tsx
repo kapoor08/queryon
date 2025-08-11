@@ -1,12 +1,10 @@
-"use client";
-
-import { LucideIcon } from "lucide-react";
+import { LucideIcon } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
 export interface DropdownItem {
   label: string;
@@ -16,8 +14,8 @@ export interface DropdownItem {
 
 interface ICommonDropdown {
   trigger?: React.ReactNode;
-  size?: "sm" | "default" | "lg";
-  variant?: "ghost" | "outline" | "default";
+  size?: 'sm' | 'default' | 'lg';
+  variant?: 'ghost' | 'outline' | 'default';
   items: DropdownItem[];
 }
 
