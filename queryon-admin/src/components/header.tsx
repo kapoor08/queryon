@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { Menu, X, MessageSquare } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { LanguageSelector, ThemeToggle } from "@/components";
-import { TranslatableText } from "@/shared/elements";
+import Link from 'next/link';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { LanguageSelector, ThemeToggle } from '@/components';
+import { TranslatableText } from '@/shared/elements';
+import Image from 'next/image';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,12 +17,13 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <MessageSquare className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold text-foreground">
-              ChatWidget
-            </span>
+            <Image
+              src="/logo.png"
+              alt="logo"
+              className="text-xl font-bold text-foreground"
+              width={200}
+              height={50}
+            />
           </Link>
 
           {/* Desktop Navigation */}
