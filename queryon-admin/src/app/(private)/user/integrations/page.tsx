@@ -155,7 +155,7 @@ export default function IntegrationsPage() {
     {
       id: 2,
       name: 'Conversation Updates',
-      url: 'https://hooks.zapier.com/hooks/catch/123456/abcdef',
+      url: 'https://hooks.zapier.com/hooks/catch/********/********',
       events: ['conversation.started', 'conversation.ended'],
       status: 'active',
       lastTriggered: '5 minutes ago',
