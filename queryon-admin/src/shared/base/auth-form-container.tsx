@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Card,
   CardContent,
@@ -14,6 +12,7 @@ import { Github, Mail } from 'lucide-react';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 import Link from 'next/link';
+import { TranslatableText } from '../elements';
 
 interface AuthFormContainerProps {
   title: string;
@@ -49,10 +48,10 @@ const AuthFormContainer = ({
             />
           </Link>
           <CardTitle className="text-2xl font-bold text-foreground">
-            {title}
+            <TranslatableText text={title} />
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            {description}
+            <TranslatableText text={description} />
           </CardDescription>
         </CardHeader>
 
@@ -66,18 +65,24 @@ const AuthFormContainer = ({
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
+                <TranslatableText text="Or continue with" />
               </span>
             </div>
           </div>
 
           {/* Social buttons */}
           <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="w-full bg-transparent">
+            <Button
+              variant="outline"
+              className="w-full bg-transparent cursor-pointer"
+            >
               <Github className="mr-2 h-4 w-4" />
               GitHub
             </Button>
-            <Button variant="outline" className="w-full bg-transparent">
+            <Button
+              variant="outline"
+              className="w-full bg-transparent cursor-pointer"
+            >
               <Mail className="mr-2 h-4 w-4" />
               Google
             </Button>

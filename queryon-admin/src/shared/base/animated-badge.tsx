@@ -1,6 +1,6 @@
-import { Zap } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { TranslatableText } from "../elements";
+import { Zap } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { TranslatableText } from '../elements/client';
 
 const AnimatedBadge = () => {
   return (

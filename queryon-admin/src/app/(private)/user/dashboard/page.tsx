@@ -1,5 +1,4 @@
 'use client';
-
 import {
   Card,
   CardContent,
@@ -14,8 +13,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   Bot,
   Key,
-  MessageSquare,
-  CreditCard,
   Plus,
   Settings,
   BarChart3,
@@ -35,75 +32,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { queryData, stats, widgetsList } from '@/data';
 
 export default function UserDashboard() {
-  const stats = [
-    {
-      title: 'Active Widgets',
-      value: '2',
-      limit: '3',
-      icon: Bot,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50 dark:bg-blue-950',
-    },
-    {
-      title: 'Monthly Queries',
-      value: '1,250',
-      limit: '500',
-      icon: MessageSquare,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50 dark:bg-purple-950',
-      isOverLimit: true,
-    },
-    {
-      title: 'API Keys',
-      value: '1',
-      icon: Key,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50 dark:bg-green-950',
-    },
-    {
-      title: 'Current Plan',
-      value: 'Pro',
-      icon: CreditCard,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50 dark:bg-orange-950',
-    },
-  ];
-
-  const widgets = [
-    {
-      id: 1,
-      name: 'Main Website Widget',
-      domain: 'mywebsite.com',
-      status: 'active',
-      queries: 850,
-      lastActive: '2 hours ago',
-      responseTime: '1.2s',
-      satisfaction: 4.8,
-    },
-    {
-      id: 2,
-      name: 'Support Portal Widget',
-      domain: 'support.mywebsite.com',
-      status: 'active',
-      queries: 400,
-      lastActive: '5 minutes ago',
-      responseTime: '0.9s',
-      satisfaction: 4.9,
-    },
-  ];
-
-  const queryData = [
-    { name: 'Mon', queries: 120 },
-    { name: 'Tue', queries: 190 },
-    { name: 'Wed', queries: 160 },
-    { name: 'Thu', queries: 210 },
-    { name: 'Fri', queries: 180 },
-    { name: 'Sat', queries: 140 },
-    { name: 'Sun', queries: 110 },
-  ];
-
   const usagePercentage = (1250 / 500) * 100; // Over limit
 
   return (
@@ -190,7 +121,7 @@ export default function UserDashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {widgets.map((widget) => (
+            {widgetsList.map((widget) => (
               <div
                 key={widget.id}
                 className="p-4 border rounded-lg hover:shadow-sm transition-shadow"

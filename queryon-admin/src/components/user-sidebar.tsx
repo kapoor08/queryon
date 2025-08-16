@@ -27,7 +27,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { navigation } from '@/data';
-import { TranslatableText } from '@/shared/elements';
+import { TranslatableText } from '@/shared/elements/client';
 import Image from 'next/image';
 
 const UserSidebar = () => {
@@ -40,14 +40,17 @@ const UserSidebar = () => {
           <div className="flex aspect-square size-8 items-center justify-center">
             <Image src="/favicon.png" alt="logo" width={50} height={50} />
           </div>
-          <div className="grid flex-1 text-left text-sm leading-tight">
+          <Link
+            href="/"
+            className="grid flex-1 text-left text-sm leading-tight"
+          >
             <span className="truncate font-semibold">Queryon</span>
             <TranslatableText
               className="truncate text-xs text-muted-foreground"
               text="Dashboard"
               as="span"
             />
-          </div>
+          </Link>
         </div>
       </SidebarHeader>
       <SidebarContent>

@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
-import { PasswordInput, SharedCheckbox, TextInput } from '../elements';
+import { SharedCheckbox, TextInput } from '../elements';
+import { PasswordInput, TranslatableText } from '../elements/client';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -41,7 +42,7 @@ const LoginForm = () => {
     setTimeout(() => {
       setIsLoading(false);
       toast('You have been successfully logged in.');
-      router.push('/dashboard');
+      router.push('/user/dashboard');
     }, 1000);
   };
 
@@ -85,8 +86,12 @@ const LoginForm = () => {
         </Link>
       </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? 'Signing in...' : 'Sign in'}
+      <Button
+        type="submit"
+        className="w-full cursor-pointer"
+        disabled={isLoading}
+      >
+        <TranslatableText text={isLoading ? 'Signing in...' : 'Sign in'} />
       </Button>
     </form>
   );

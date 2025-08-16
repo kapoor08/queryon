@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { features } from "@/data";
-import { Card, CardContent } from "@/components/ui/card";
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
-import { TranslatableText } from "@/shared/elements";
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { features } from '@/data';
+import { Card, CardContent } from '@/components/ui/card';
+import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
+import { TranslatableText } from '@/shared/elements/client';
 
 const Features = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -36,7 +36,7 @@ const Features = () => {
             />
           </div>
           <h2 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-            <TranslatableText text="Everything You Need for" />{" "}
+            <TranslatableText text="Everything You Need for" />{' '}
             <span className="bg-gradient-to-r from-emerald-600 to-cyan-600 bg-clip-text text-transparent">
               <TranslatableText text="Intelligent Support" />
             </span>
@@ -54,33 +54,33 @@ const Features = () => {
             <Card
               key={index}
               className={cn(
-                "group relative overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer",
+                'group relative overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer',
                 visibleIndexes.includes(index)
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-20 opacity-0"
+                  ? 'translate-y-0 opacity-100'
+                  : 'translate-y-20 opacity-0'
               )}
               style={{
                 transitionDelay: `${index * 100}ms`,
                 boxShadow:
                   hoveredCard === index
                     ? `0 25px 50px -12px ${
-                        feature.color === "blue"
-                          ? "rgba(59, 130, 246, 0.25)"
-                          : feature.color === "emerald"
-                          ? "rgba(16, 185, 129, 0.25)"
-                          : feature.color === "purple"
-                          ? "rgba(139, 92, 246, 0.25)"
-                          : feature.color === "red"
-                          ? "rgba(239, 68, 68, 0.25)"
-                          : feature.color === "orange"
-                          ? "rgba(249, 115, 22, 0.25)"
-                          : feature.color === "cyan"
-                          ? "rgba(6, 182, 212, 0.25)"
-                          : feature.color === "indigo"
-                          ? "rgba(99, 102, 241, 0.25)"
-                          : feature.color === "pink"
-                          ? "rgba(236, 72, 153, 0.25)"
-                          : "rgba(20, 184, 166, 0.25)"
+                        feature.color === 'blue'
+                          ? 'rgba(59, 130, 246, 0.25)'
+                          : feature.color === 'emerald'
+                            ? 'rgba(16, 185, 129, 0.25)'
+                            : feature.color === 'purple'
+                              ? 'rgba(139, 92, 246, 0.25)'
+                              : feature.color === 'red'
+                                ? 'rgba(239, 68, 68, 0.25)'
+                                : feature.color === 'orange'
+                                  ? 'rgba(249, 115, 22, 0.25)'
+                                  : feature.color === 'cyan'
+                                    ? 'rgba(6, 182, 212, 0.25)'
+                                    : feature.color === 'indigo'
+                                      ? 'rgba(99, 102, 241, 0.25)'
+                                      : feature.color === 'pink'
+                                        ? 'rgba(236, 72, 153, 0.25)'
+                                        : 'rgba(20, 184, 166, 0.25)'
                       }`
                     : undefined,
               }}
@@ -90,7 +90,7 @@ const Features = () => {
               {/* Gradient Border Effect */}
               <div
                 className={cn(
-                  "absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-lg",
+                  'absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-lg',
                   feature.gradient
                 )}
               />
@@ -105,14 +105,14 @@ const Features = () => {
                   {/* Icon Container with Glow */}
                   <div
                     className={cn(
-                      "w-16 h-16 rounded-2xl bg-gradient-to-r flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 relative",
+                      'w-16 h-16 rounded-2xl bg-gradient-to-r flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 relative',
                       feature.gradient
                     )}
                   >
                     <feature.icon className="w-8 h-8 text-white group-hover:animate-pulse" />
                     <div
                       className={cn(
-                        "absolute inset-0 rounded-2xl bg-gradient-to-r blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500",
+                        'absolute inset-0 rounded-2xl bg-gradient-to-r blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500',
                         feature.gradient
                       )}
                     />

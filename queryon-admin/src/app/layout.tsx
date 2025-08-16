@@ -4,13 +4,13 @@ import { ThemeProvider } from 'next-themes';
 import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
 import { TranslationProvider } from '@/contexts';
-import { TranslationLoadingIndicator } from '@/shared/elements';
+import { TranslationLoadingIndicator } from '@/shared/elements/client';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'ChatWidget - AI-Powered Customer Support',
+  title: 'Queryon - AI-Powered Customer Support',
   description:
     'Transform your customer support with intelligent chat widgets. Deploy in minutes, customize everything.',
   icons: {

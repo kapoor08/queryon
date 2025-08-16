@@ -2,6 +2,7 @@ import type React from 'react';
 import Link from 'next/link';
 import { AuthFormContainer } from '@/shared/base';
 import { LoginForm } from '@/shared/forms';
+import { TranslatableText } from '@/shared/elements';
 
 export default function LoginPage() {
   return (
@@ -10,9 +11,9 @@ export default function LoginPage() {
       description="Sign in to your account to continue"
       bottomText={
         <>
-          Don&apos;t have an account?{' '}
+          <TranslatableText text="Don't have an account?" />{' '}
           <Link href="/auth/signup" className="text-primary hover:underline">
-            Sign up
+            <TranslatableText text="Sign up" />
           </Link>
         </>
       }

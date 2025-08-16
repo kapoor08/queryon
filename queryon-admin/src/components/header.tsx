@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LanguageSelector, ThemeToggle } from '@/components';
-import { TranslatableText } from '@/shared/elements';
+import { TranslatableText } from '@/shared/elements/client';
 import Image from 'next/image';
 
 const Header = () => {
@@ -23,6 +23,7 @@ const Header = () => {
               className="text-xl font-bold text-foreground"
               width={200}
               height={50}
+              priority
             />
           </Link>
 

@@ -2,9 +2,10 @@
 import { Button } from '@/components/ui/button';
 import {
   NameInput,
-  PasswordInput,
   SharedCheckbox,
   TextInput,
+  PasswordInput,
+  TranslatableText,
 } from '../elements';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -103,13 +104,13 @@ const SignupForm = () => {
         id="terms"
         label={
           <>
-            I agree to the{' '}
+            <TranslatableText text="I agree to the" />{' '}
             <Link href="/terms" className="text-primary hover:underline">
-              Terms of Service
+              <TranslatableText text="Terms of Service" />
             </Link>{' '}
-            and{' '}
+            <TranslatableText text="and" />{' '}
             <Link href="/privacy" className="text-primary hover:underline">
-              Privacy Policy
+              <TranslatableText text="Privacy Policy" />
             </Link>
           </>
         }
@@ -121,8 +122,14 @@ const SignupForm = () => {
         required
       />
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? 'Creating account...' : 'Create account'}
+      <Button
+        type="submit"
+        className="w-full cursor-pointer"
+        disabled={isLoading}
+      >
+        <TranslatableText
+          text={isLoading ? 'Creating account...' : 'Create account'}
+        />
       </Button>
     </form>
   );

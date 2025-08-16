@@ -1,6 +1,6 @@
-import { ArrowRight, MessageCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { TranslatableText } from "@/shared/elements";
+import { ArrowRight, MessageCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { TranslatableText } from '@/shared/elements/client';
 
 const CTA = () => {
   return (

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import FeatureCards from "@/shared/base/feature-cards";
-import ConnectionSystem from "@/shared/base/connection-system";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import { cn } from "@/lib/utils";
-import { steps } from "@/data";
-import { TranslatableText } from "@/shared/elements";
+import { useEffect, useState } from 'react';
+import FeatureCards from '@/shared/base/feature-cards';
+import ConnectionSystem from '@/shared/base/connection-system';
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
+import { cn } from '@/lib/utils';
+import { steps } from '@/data';
+import { TranslatableText } from '@/shared/elements/client';
 
 const HowItWorks = () => {
   const { ref, isVisible } = useScrollAnimation(0.2);
@@ -41,8 +41,8 @@ const HowItWorks = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div
           className={cn(
-            "text-center mb-20 transition-all duration-1000",
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            'text-center mb-20 transition-all duration-1000',
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}
         >
           <TranslatableText
@@ -84,8 +84,8 @@ const HowItWorks = () => {
           {/* Progress Indicators */}
           <div
             className={cn(
-              "hidden lg:flex justify-center mt-16 space-x-4 transition-all duration-1000",
-              isVisible ? "opacity-100" : "opacity-0"
+              'hidden lg:flex justify-center mt-16 space-x-4 transition-all duration-1000',
+              isVisible ? 'opacity-100' : 'opacity-0'
             )}
           >
             {steps.map((step, index) => (
@@ -93,10 +93,10 @@ const HowItWorks = () => {
                 key={index}
                 onClick={() => setActiveStep(index)}
                 className={cn(
-                  "w-3 h-3 rounded-full transition-all duration-300",
+                  'w-3 h-3 rounded-full transition-all duration-300',
                   activeStep === index
-                    ? step.bgColor + " scale-125"
-                    : "bg-slate-600 hover:bg-slate-500"
+                    ? step.bgColor + ' scale-125'
+                    : 'bg-slate-600 hover:bg-slate-500'
                 )}
               />
             ))}
