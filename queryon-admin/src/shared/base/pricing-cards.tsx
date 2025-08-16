@@ -1,5 +1,5 @@
-import { Check, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Check, Star } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -7,14 +7,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { TranslatableText } from "../elements";
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { TranslatableText } from '../elements/client';
 
 interface IPricingCardsProps {
   name: string;
-  price: string;
   period: string;
   description: string;
   features: string[];
@@ -24,17 +23,29 @@ interface IPricingCardsProps {
 
 interface IPricingProps {
   plan: IPricingCardsProps;
+  price: number;
+  displayPeriod: string;
+  originalPrice: number;
+  showBillingToggle: boolean;
+  isYearly: boolean;
 }
 
-const PricingCards = ({ plan }: IPricingProps) => {
+const PricingCards = ({
+  plan,
+  price,
+  displayPeriod,
+  originalPrice,
+  showBillingToggle,
+  isYearly,
+}: IPricingProps) => {
   return (
     <Card
       className={cn(
         plan.scale,
-        "transition-all duration-500 hover:shadow-2xl",
+        'transition-all duration-500 hover:shadow-2xl',
         plan.popular
-          ? "border-primary shadow-xl bg-gradient-to-b from-primary/5 to-primary/10 relative z-10"
-          : "border-border hover:border-primary/50"
+          ? 'border-primary shadow-xl bg-gradient-to-b from-primary/5 to-primary/10 relative z-10'
+          : 'border-border hover:border-primary/50'
       )}
     >
       {plan.popular && (
@@ -46,7 +57,7 @@ const PricingCards = ({ plan }: IPricingProps) => {
         </div>
       )}
 
-      <CardHeader className={cn("text-center", plan.popular ? "pt-8" : "pt-6")}>
+      <CardHeader className={cn('text-center', plan.popular ? 'pt-8' : 'pt-6')}>
         <CardTitle className="text-2xl font-bold text-foreground">
           <TranslatableText text={plan.name} />
         </CardTitle>
@@ -54,10 +65,20 @@ const PricingCards = ({ plan }: IPricingProps) => {
           <TranslatableText text={plan.description} />
         </CardDescription>
         <div className="mt-6">
-          <span className="text-4xl font-bold text-foreground">
-            {plan.price}
-          </span>
-          <span className="text-muted-foreground">{plan.period}</span>
+          <div className="flex items-baseline justify-center gap-2">
+            <span className="text-4xl font-bold text-foreground">${price}</span>
+            <span className="text-muted-foreground">{displayPeriod}</span>
+          </div>
+          {showBillingToggle && isYearly && (
+            <div className="mt-2">
+              <span className="text-sm text-muted-foreground line-through">
+                ${originalPrice}
+              </span>
+              <span className="text-sm text-green-600 dark:text-green-400 ml-2">
+                Save ${originalPrice - price}
+              </span>
+            </div>
+          )}
         </div>
       </CardHeader>
 
@@ -73,10 +94,10 @@ const PricingCards = ({ plan }: IPricingProps) => {
       <CardFooter>
         <Button
           className={cn(
-            "w-full",
+            'w-full',
             plan.popular
-              ? "bg-primary hover:bg-primary/90 text-primary-foreground"
-              : "bg-secondary hover:bg-secondary/80 text-secondary-foreground"
+              ? 'bg-primary hover:bg-primary/90 text-primary-foreground'
+              : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
           )}
           size="lg"
         >

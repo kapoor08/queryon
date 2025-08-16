@@ -1,6 +1,6 @@
-import { testimonials } from "@/data";
-import { TestimonialCards } from "@/shared/base";
-import { TranslatableText } from "@/shared/elements";
+import { testimonials } from '@/data';
+import { TestimonialCards } from '@/shared/base';
+import { TranslatableText } from '@/shared/elements/client';
 
 const Testimonials = () => {
   return (

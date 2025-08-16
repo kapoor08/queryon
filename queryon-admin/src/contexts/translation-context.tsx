@@ -27,7 +27,7 @@ interface TranslationContextType {
   translateTexts: (texts: string[], targetLang?: string) => Promise<string[]>;
   registerTextForTranslation: (text: string) => Promise<string>;
   isTranslating: boolean;
-  translationCache: Map<string, string>;
+  translationCache: Record<string, string> | Map<string, string>;
   clearCache: () => void;
   isInitialized: boolean;
 }
@@ -37,35 +37,40 @@ const TranslationContext = createContext<TranslationContextType | undefined>(
 );
 
 export function TranslationProvider({ children }: { children: ReactNode }) {
+  // Start with default values that match server-side rendering
   const [currentLanguage, setCurrentLanguageState] = useState('en');
   const [isTranslating, setIsTranslating] = useState(false);
-  const [translationCache, setTranslationCache] = useState(
-    () => new Map<string, string>()
-  );
+  const [translationCache, setTranslationCache] = useState<
+    Record<string, string>
+  >({});
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Batching mechanism
-  const pendingTranslations = useRef(new Map<string, TranslationEntry>());
+  // Batching mechanism - using useRef to avoid hydration issues
+  const pendingTranslations = useRef<Map<string, TranslationEntry>>(new Map());
   const batchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const BATCH_DELAY = 100;
 
-  // Initialize language from cookie on mount
+  // Handle mounting and language initialization
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedLanguage = getLanguageFromCookie();
-      setCurrentLanguageState(savedLanguage);
-      setIsInitialized(true);
-    }
+    setIsMounted(true);
+    const savedLanguage = getLanguageFromCookie();
+    setCurrentLanguageState(savedLanguage);
+    setIsInitialized(true);
   }, []);
 
   // Custom setter that updates both state and cookie
-  const setCurrentLanguage = useCallback((language: string) => {
-    setCurrentLanguageState(language);
-    setLanguageCookie(language);
-
-    // Clear cache when language changes
-    setTranslationCache(new Map());
-  }, []);
+  const setCurrentLanguage = useCallback(
+    (language: string) => {
+      setCurrentLanguageState(language);
+      if (isMounted) {
+        setLanguageCookie(language);
+      }
+      // Clear cache when language changes
+      setTranslationCache({});
+    },
+    [isMounted]
+  );
 
   // Memoize cache key function
   const getCacheKey = useCallback((text: string, targetLang: string) => {
@@ -73,12 +78,12 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const clearCache = useCallback(() => {
-    setTranslationCache(new Map());
+    setTranslationCache({});
   }, []);
 
   // Process batch of translations
   const processBatch = useCallback(async () => {
-    if (pendingTranslations.current.size === 0) return;
+    if (!isMounted || pendingTranslations.current.size === 0) return;
 
     const entries = Array.from(pendingTranslations.current.values());
     const textsToTranslate = entries.map((entry) => entry.originalText);
@@ -106,22 +111,24 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
       const translations = data.translations || textsToTranslate;
 
       // Update cache and resolve promises
-      const newCache = new Map(translationCache);
+      setTranslationCache((prevCache) => {
+        const newCache = { ...prevCache };
 
-      entries.forEach((entry, index) => {
-        const translatedText = translations[index] || entry.originalText;
-        const cacheKey = getCacheKey(entry.originalText, currentLanguage);
+        entries.forEach((entry, index) => {
+          const translatedText = translations[index] || entry.originalText;
+          const cacheKey = getCacheKey(entry.originalText, currentLanguage);
 
-        // Update cache
-        newCache.set(cacheKey, translatedText);
+          // Update cache
+          newCache[cacheKey] = translatedText;
 
-        // Resolve the promise
-        if (entry.resolve) {
-          entry.resolve(translatedText);
-        }
+          // Resolve the promise
+          if (entry.resolve) {
+            entry.resolve(translatedText);
+          }
+        });
+
+        return newCache;
       });
-
-      setTranslationCache(newCache);
     } catch (error) {
       console.error('Batch translation error:', error);
 
@@ -135,19 +142,19 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
       setIsTranslating(false);
       pendingTranslations.current.clear();
     }
-  }, [currentLanguage, translationCache, getCacheKey]);
+  }, [currentLanguage, getCacheKey, isMounted]);
 
   // Register text for batch translation
   const registerTextForTranslation = useCallback(
     (text: string): Promise<string> => {
-      // Return immediately if language is English
-      if (currentLanguage === 'en') {
+      // Return immediately if not mounted or language is English
+      if (!isMounted || currentLanguage === 'en') {
         return Promise.resolve(text);
       }
 
       // Check cache first
       const cacheKey = getCacheKey(text, currentLanguage);
-      const cachedTranslation = translationCache.get(cacheKey);
+      const cachedTranslation = translationCache[cacheKey];
       if (cachedTranslation) {
         return Promise.resolve(cachedTranslation);
       }
@@ -173,12 +180,14 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         }, BATCH_DELAY);
       });
     },
-    [currentLanguage, translationCache, getCacheKey, processBatch]
+    [currentLanguage, translationCache, getCacheKey, processBatch, isMounted]
   );
 
   // Memoize translateText to prevent infinite re-renders
   const translateText = useCallback(
     async (text: string, targetLang?: string): Promise<string> => {
+      if (!isMounted) return text;
+
       const targetLanguage = targetLang || currentLanguage;
 
       if (targetLanguage === 'en') return text;
@@ -186,7 +195,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
 
       // Check cache first
       const cacheKey = getCacheKey(text, targetLanguage);
-      const cached = translationCache.get(cacheKey);
+      const cached = translationCache[cacheKey];
       if (cached) return cached;
 
       setIsTranslating(true);
@@ -207,7 +216,10 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         const translation = data.translation || text;
 
         // Update cache immutably
-        setTranslationCache((prev) => new Map(prev).set(cacheKey, translation));
+        setTranslationCache((prev) => ({
+          ...prev,
+          [cacheKey]: translation,
+        }));
 
         return translation;
       } catch (error) {
@@ -217,25 +229,27 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         setIsTranslating(false);
       }
     },
-    [currentLanguage, getCacheKey, translationCache]
+    [currentLanguage, getCacheKey, translationCache, isMounted]
   );
 
   // Memoize translateTexts to prevent infinite re-renders
   const translateTexts = useCallback(
     async (texts: string[], targetLang?: string): Promise<string[]> => {
+      if (!isMounted) return texts;
+
       const targetLanguage = targetLang || currentLanguage;
 
       if (targetLanguage === 'en') return texts;
       if (!texts.length) return texts;
 
       // Check cache for all texts
-      const cacheResults: string[] = [];
+      const cacheResults: string[] = new Array(texts.length);
       const textsToTranslate: string[] = [];
       const indicesToTranslate: number[] = [];
 
       texts.forEach((text, index) => {
         const cacheKey = getCacheKey(text, targetLanguage);
-        const cached = translationCache.get(cacheKey);
+        const cached = translationCache[cacheKey];
 
         if (cached) {
           cacheResults[index] = cached;
@@ -268,15 +282,19 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         const translations = data.translations || textsToTranslate;
 
         // Update cache with new translations
-        const newCache = new Map(translationCache);
-        textsToTranslate.forEach((text, index) => {
-          const cacheKey = getCacheKey(text, targetLanguage);
-          const translation = translations[index] || text;
-          newCache.set(cacheKey, translation);
-          cacheResults[indicesToTranslate[index]] = translation;
+        setTranslationCache((prevCache) => {
+          const newCache = { ...prevCache };
+
+          textsToTranslate.forEach((text, index) => {
+            const cacheKey = getCacheKey(text, targetLanguage);
+            const translation = translations[index] || text;
+            newCache[cacheKey] = translation;
+            cacheResults[indicesToTranslate[index]] = translation;
+          });
+
+          return newCache;
         });
 
-        setTranslationCache(newCache);
         return cacheResults;
       } catch (error) {
         console.error('Translation error:', error);
@@ -289,7 +307,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         setIsTranslating(false);
       }
     },
-    [currentLanguage, getCacheKey, translationCache]
+    [currentLanguage, getCacheKey, translationCache, isMounted]
   );
 
   // Memoize context value to prevent unnecessary re-renders

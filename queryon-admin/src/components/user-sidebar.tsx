@@ -1,16 +1,10 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-  MessageSquare,
-  HelpCircle,
-  Settings,
-  ChevronDown,
-  LogOut,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { HelpCircle, Settings, ChevronDown, LogOut } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import {
   Sidebar,
   SidebarContent,
@@ -23,7 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,9 +25,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { navigation } from "@/data";
-import { TranslatableText } from "@/shared/elements";
+} from '@/components/ui/dropdown-menu';
+import { navigation } from '@/data';
+import { TranslatableText } from '@/shared/elements/client';
+import Image from 'next/image';
 
 const UserSidebar = () => {
   const pathname = usePathname();
@@ -41,18 +36,21 @@ const UserSidebar = () => {
   return (
     <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-4 py-2">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-blue-600 text-white">
-            <MessageSquare className="size-4" />
+        <div className="flex items-center gap-2 px-0 py-2">
+          <div className="flex aspect-square size-8 items-center justify-center">
+            <Image src="/favicon.png" alt="logo" width={50} height={50} />
           </div>
-          <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">ChatWidget</span>
+          <Link
+            href="/"
+            className="grid flex-1 text-left text-sm leading-tight"
+          >
+            <span className="truncate font-semibold">Queryon</span>
             <TranslatableText
               className="truncate text-xs text-muted-foreground"
               text="Dashboard"
               as="span"
             />
-          </div>
+          </Link>
         </div>
       </SidebarHeader>
       <SidebarContent>

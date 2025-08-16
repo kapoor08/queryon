@@ -1,6 +1,6 @@
-import { ArrowRight, Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { TranslatableText } from "../elements";
+import { ArrowRight, Play } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { TranslatableText } from '../elements/client';
 
 const CTAButtons = () => {
   return (

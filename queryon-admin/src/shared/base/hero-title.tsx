@@ -1,4 +1,4 @@
-import { TranslatableText } from "@/shared/elements";
+import { TranslatableText } from '@/shared/elements/client';
 
 const HeroTitle = () => {
   return (
@@ -12,8 +12,8 @@ const HeroTitle = () => {
             text="Customer Support"
             className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient"
             style={{
-              backgroundSize: "200% 200%",
-              animation: "gradient 3s ease infinite",
+              backgroundSize: '200% 200%',
+              animation: 'gradient 3s ease infinite',
             }}
           />
           <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400/10 via-cyan-400/10 to-blue-400/10 blur-xl animate-pulse rounded-lg" />

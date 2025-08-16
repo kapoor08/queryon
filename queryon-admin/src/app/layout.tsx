@@ -1,18 +1,21 @@
-import type React from "react";
-import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
-import { Inter } from "next/font/google";
-import { Toaster } from "@/components/ui/sonner";
-import { TranslationProvider } from "@/contexts";
-import { TranslationLoadingIndicator } from "@/shared/elements";
-import "./globals.css";
+import type React from 'react';
+import type { Metadata } from 'next';
+import { ThemeProvider } from 'next-themes';
+import { Inter } from 'next/font/google';
+import { Toaster } from '@/components/ui/sonner';
+import { TranslationProvider } from '@/contexts';
+import { TranslationLoadingIndicator } from '@/shared/elements/client';
+import './globals.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "ChatWidget - AI-Powered Customer Support",
+  title: 'Queryon - AI-Powered Customer Support',
   description:
-    "Transform your customer support with intelligent chat widgets. Deploy in minutes, customize everything.",
+    'Transform your customer support with intelligent chat widgets. Deploy in minutes, customize everything.',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({

@@ -1,10 +1,10 @@
-import { Check, Copy } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { integrationMethods } from "@/data";
-import { cn } from "@/lib/utils";
-import { TranslatableText } from "../elements";
+import { Check, Copy } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { integrationMethods } from '@/data';
+import { cn } from '@/lib/utils';
+import { TranslatableText } from '../elements/client';
 
 interface IIntegrationMethodCards {
   isVisible: boolean;
@@ -23,8 +23,8 @@ const IntegrationMethodCards = ({
         <Card
           key={index}
           className={cn(
-            "group bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/10",
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
+            'group bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/10',
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           )}
           style={{ transitionDelay: `${index * 200}ms` }}
         >

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Code, Sparkles } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { technologies } from "@/data";
-import { Card, CardContent } from "@/components/ui/card";
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
-import { IntegrationMethodCards } from "@/shared/base";
-import { TranslatableText } from "@/shared/elements";
+import { useState } from 'react';
+import { Code, Sparkles } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { technologies } from '@/data';
+import { Card, CardContent } from '@/components/ui/card';
+import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
+import { IntegrationMethodCards } from '@/shared/base';
+import { TranslatableText } from '@/shared/elements/client';
 
 const Integration = () => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -38,7 +38,7 @@ const Integration = () => {
                 linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
               `,
-              backgroundSize: "40px 40px",
+              backgroundSize: '40px 40px',
             }}
           />
         </div>
@@ -47,8 +47,8 @@ const Integration = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div
           className={cn(
-            "text-center mb-16 transition-all duration-1000",
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+            'text-center mb-16 transition-all duration-1000',
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           )}
         >
           <div className="inline-flex items-center space-x-2 mb-4">
@@ -58,7 +58,7 @@ const Integration = () => {
             </span>
           </div>
           <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6">
-            <TranslatableText text="Deploy in" />{" "}
+            <TranslatableText text="Deploy in" />{' '}
             <span className="relative">
               <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                 <TranslatableText text="Minutes" />
@@ -85,12 +85,12 @@ const Integration = () => {
         {/* Technologies */}
         <div
           className={cn(
-            "mb-16 transition-all duration-1000 delay-400",
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
+            'mb-16 transition-all duration-1000 delay-400',
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           )}
         >
           <h3 className="text-3xl font-bold text-white text-center mb-8">
-            <TranslatableText text="Built with" />{" "}
+            <TranslatableText text="Built with" />{' '}
             <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               <TranslatableText text="Modern Technology" />
             </span>
@@ -108,7 +108,7 @@ const Integration = () => {
                     </div>
                     <div
                       className={cn(
-                        "absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-20 blur-xl rounded-full transition-opacity duration-500",
+                        'absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-20 blur-xl rounded-full transition-opacity duration-500',
                         tech.color
                       )}
                     />

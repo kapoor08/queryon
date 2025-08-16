@@ -1,41 +1,42 @@
-"use client";
+'use client';
 
-import { Globe, Loader2 } from "lucide-react";
-import { useTranslation } from "@/contexts";
+import { Globe, Loader2 } from 'lucide-react';
+import { useTranslation } from '@/contexts';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+} from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 
 // Updated language list with correct Google Translate codes
 const languages = [
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
-  { code: "fr", name: "Français", flag: "🇫🇷" },
-  { code: "de", name: "Deutsch", flag: "🇩🇪" },
-  { code: "it", name: "Italiano", flag: "🇮🇹" },
-  { code: "pt", name: "Português", flag: "🇵🇹" },
-  { code: "ru", name: "Русский", flag: "🇷🇺" },
-  { code: "ja", name: "日本語", flag: "🇯🇵" },
-  { code: "ko", name: "한국어", flag: "🇰🇷" },
-  { code: "zh-cn", name: "中文", flag: "🇨🇳" },
-  { code: "hi", name: "हिन्दी", flag: "🇮🇳" },
-  { code: "ar", name: "العربية", flag: "🇸🇦" },
-  { code: "th", name: "ไทย", flag: "🇹🇭" },
-  { code: "vi", name: "Tiếng Việt", flag: "🇻🇳" },
-  { code: "nl", name: "Nederlands", flag: "🇳🇱" },
-  { code: "pl", name: "Polski", flag: "🇵🇱" },
-  { code: "sv", name: "Svenska", flag: "🇸🇪" },
-  { code: "tr", name: "Türkçe", flag: "🇹🇷" },
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
+  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+  { code: 'pt', name: 'Português', flag: '🇵🇹' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+  { code: 'ja', name: '日本語', flag: '🇯🇵' },
+  { code: 'ko', name: '한국어', flag: '🇰🇷' },
+  { code: 'zh-cn', name: '中文', flag: '🇨🇳' },
+  { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
+  { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+  { code: 'th', name: 'ไทย', flag: '🇹🇭' },
+  { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳' },
+  { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
+  { code: 'pl', name: 'Polski', flag: '🇵🇱' },
+  { code: 'sv', name: 'Svenska', flag: '🇸🇪' },
+  { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
 ];
 
-export default function LanguageSelector() {
-  const { currentLanguage, setCurrentLanguage, isTranslating, isInitialized } = useTranslation();
+const LanguageSelector = () => {
+  const { currentLanguage, setCurrentLanguage, isTranslating, isInitialized } =
+    useTranslation();
 
   const currentLang = languages.find((lang) => lang.code === currentLanguage);
 
@@ -54,7 +55,11 @@ export default function LanguageSelector() {
 
   return (
     <div className="flex items-center gap-2">
-      <Select value={currentLanguage} onValueChange={handleLanguageChange} disabled={isTranslating}>
+      <Select
+        value={currentLanguage}
+        onValueChange={handleLanguageChange}
+        disabled={isTranslating}
+      >
         <SelectTrigger className="w-[150px] h-9 cursor-pointer">
           <div className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
@@ -62,7 +67,9 @@ export default function LanguageSelector() {
               <div className="flex items-center gap-1">
                 <span>{currentLang?.flag}</span>
                 <span className="hidden sm:inline">{currentLang?.name}</span>
-                <span className="sm:hidden">{currentLang?.code.toUpperCase()}</span>
+                <span className="sm:hidden">
+                  {currentLang?.code.toUpperCase()}
+                </span>
               </div>
             </SelectValue>
           </div>
@@ -73,7 +80,9 @@ export default function LanguageSelector() {
               <div className="flex items-center gap-2 cursor-pointer">
                 <span>{lang.flag}</span>
                 <span>{lang.name}</span>
-                <span className="text-xs text-muted-foreground">({lang.code})</span>
+                <span className="text-xs text-muted-foreground">
+                  ({lang.code})
+                </span>
               </div>
             </SelectItem>
           ))}
@@ -88,4 +97,6 @@ export default function LanguageSelector() {
       )}
     </div>
   );
-}
+};
+
+export default LanguageSelector;

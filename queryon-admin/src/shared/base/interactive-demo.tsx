@@ -1,9 +1,9 @@
-import ChatWidget from "@/components/chat-widget";
-import { ALL_THEMES } from "@/data";
-import { cn } from "@/lib/utils";
-import { ICommonTypes } from "@/types/base";
-import { Sparkles, Star, Users } from "lucide-react";
-import { TranslatableText } from "../elements";
+import ChatWidget from '@/components/chat-widget';
+import { ALL_THEMES } from '@/data';
+import { cn } from '@/lib/utils';
+import { ICommonTypes } from '@/types/base';
+import { Sparkles, Star, Users } from 'lucide-react';
+import { TranslatableText } from '../elements/client';
 
 const InteractiveDemo = ({
   isLoaded,
@@ -13,8 +13,8 @@ const InteractiveDemo = ({
   return (
     <div
       className={cn(
-        "relative transition-all duration-1000 ease-out delay-300",
-        isLoaded ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"
+        'relative transition-all duration-1000 ease-out delay-300',
+        isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
       )}
     >
       {/* Demo Container */}
@@ -30,11 +30,11 @@ const InteractiveDemo = ({
               <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse will-change-transform" />
               <div
                 className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse will-change-transform"
-                style={{ animationDelay: "0.2s" }}
+                style={{ animationDelay: '0.2s' }}
               />
               <div
                 className="w-3 h-3 bg-green-500 rounded-full animate-pulse will-change-transform"
-                style={{ animationDelay: "0.4s" }}
+                style={{ animationDelay: '0.4s' }}
               />
             </div>
             <div className="flex-1 bg-slate-700/50 rounded-lg px-4 py-2 backdrop-blur-sm">
@@ -113,10 +113,10 @@ const InteractiveDemo = ({
                 key={index}
                 onClick={() => setActiveDemo(index)}
                 className={cn(
-                  "w-2 h-2 rounded-full transition-all duration-300",
+                  'w-2 h-2 rounded-full transition-all duration-300',
                   activeDemo === index
-                    ? "bg-emerald-400 scale-125"
-                    : "bg-slate-600 hover:bg-slate-500"
+                    ? 'bg-emerald-400 scale-125'
+                    : 'bg-slate-600 hover:bg-slate-500'
                 )}
               />
             ))}
