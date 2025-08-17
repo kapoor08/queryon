@@ -1,14 +1,18 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
+// ChatWidget.tsx - FIXED VERSION
 import React, { useEffect, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/@extended/ui/button";
-import { WidgetConfig, ChatBubble } from "@/components/ChatWidget";
+import { ChatBubble } from "@/components/ChatWidget";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import SendIcon from "@/assets/svg/send.svg?react";
 import MessageIcon from "@/assets/svg/message.svg?react";
 import CloseIcon from "@/assets/svg/close.svg?react";
 import tailwindStyles from "@/index.css?inline";
+import { ForestGreenTheme } from "./config";
 
 // Professional sample conversation for demo
 const SAMPLE_MESSAGES = [
@@ -30,19 +34,95 @@ const SAMPLE_MESSAGES = [
   },
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ChatWidget = (props: any) => {
+interface ThemeConfig {
+  colors: {
+    primary: string;
+    primaryHover: string;
+    secondary: string;
+    background: string;
+    border: string;
+    text: string;
+    textSecondary: string;
+    received?: string;
+    sent?: string;
+    accent?: string;
+    surface?: string;
+  };
+  branding: {
+    supportTitle: string;
+    supportSubtitle: string;
+    placeholder: string;
+    companyName: string;
+    footerText: string;
+  };
+  width: number;
+  height: number;
+}
+
+interface ChatWidgetProps {
+  theme?: ThemeConfig;
+  apiEndpoint?: string;
+  webhookUrl?: string;
+  onMessageSent?: (message: string) => void;
+  onWidgetToggle?: (isOpen: boolean) => void;
+}
+
+const ChatWidget = ({
+  theme,
+  apiEndpoint,
+  webhookUrl,
+  onMessageSent,
+  onWidgetToggle,
+}: ChatWidgetProps) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState(SAMPLE_MESSAGES);
   const ref = React.useRef<HTMLDivElement | null>(null);
 
-  // Get theme colors
-  const theme = WidgetConfig.colors;
+  // Create a safe theme configuration with proper fallbacks
+  const WidgetConfig = React.useMemo(() => {
+    console.log("🎨 Processing theme in ChatWidget:", theme);
+
+    const baseTheme = theme || ForestGreenTheme;
+    console.log("🏗️ Base theme:", baseTheme);
+
+    // Ensure all required properties exist with fallbacks
+    const safeTheme = {
+      colors: {
+        primary: baseTheme?.colors?.primary || "#059669",
+        primaryHover: baseTheme?.colors?.primaryHover || "#047857",
+        secondary: baseTheme?.colors?.secondary || "#f0fdf4",
+        background: baseTheme?.colors?.background || "#ffffff",
+        border: baseTheme?.colors?.border || "#d1d5db",
+        text: baseTheme?.colors?.text || "#1f2937",
+        textSecondary: baseTheme?.colors?.textSecondary || "#6b7280",
+        received: baseTheme?.colors?.received || "#f3f4f6",
+        sent: baseTheme?.colors?.sent || "#059669",
+        accent: baseTheme?.colors?.accent || "#f59e0b",
+        surface: baseTheme?.colors?.surface || "#fefefe",
+      },
+      branding: {
+        supportTitle: baseTheme?.branding?.supportTitle || "Customer Support",
+        supportSubtitle: baseTheme?.branding?.supportSubtitle || "We're here to help",
+        placeholder: baseTheme?.branding?.placeholder || "Type your message...",
+        companyName: baseTheme?.branding?.companyName || "Your Company",
+        footerText: baseTheme?.branding?.footerText || "We typically reply in a few minutes",
+      },
+      width: baseTheme?.width || 360,
+      height: baseTheme?.height || 500,
+    };
+
+    console.log("✅ Safe theme created:", safeTheme);
+    return safeTheme;
+  }, [theme]);
+
+  // Get theme colors with guaranteed safety
+  const themeColors = WidgetConfig.colors;
   const branding = WidgetConfig.branding;
 
-  // eslint-disable-next-line no-console
-  console.log(props, "props in chat widget");
+  // Log to verify everything is working
+  console.log("🎯 Theme colors:", themeColors);
+  console.log("🏷️ Branding:", branding);
 
   useEffect(() => {
     if (open && ref.current) {
@@ -51,21 +131,83 @@ const ChatWidget = (props: any) => {
     }
   }, [open, messages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (message.trim()) {
-      setMessages((prev) => [...prev, { type: "sent", message: message.trim() }]);
+      const userMessage = { type: "sent" as const, message: message.trim() };
+      setMessages((prev) => [...prev, userMessage]);
+
+      // Call the onMessageSent callback if provided
+      if (onMessageSent) {
+        onMessageSent(message.trim());
+      }
+
+      const currentMessage = message.trim();
       setMessage("");
 
-      // Simulate a response after a brief delay
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            type: "received",
-            message: "Thank you for your message. Our team will get back to you shortly!",
-          },
-        ]);
-      }, 1000);
+      // If API endpoint is provided, send the message there
+      if (apiEndpoint) {
+        try {
+          const response = await fetch(apiEndpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message: currentMessage,
+              timestamp: new Date().toISOString(),
+              sessionId: generateSessionId(),
+            }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.reply) {
+              setMessages((prev) => [
+                ...prev,
+                {
+                  type: "received",
+                  message: data.reply,
+                },
+              ]);
+            }
+          }
+        } catch (error) {
+          console.error("Error sending message to API:", error);
+        }
+      }
+
+      // If webhook URL is provided, send notification there
+      if (webhookUrl) {
+        try {
+          fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message: currentMessage,
+              timestamp: new Date().toISOString(),
+              sessionId: generateSessionId(),
+              type: "new_message",
+            }),
+          });
+        } catch (error) {
+          console.error("Error sending webhook:", error);
+        }
+      }
+
+      // Default auto-response if no API endpoint
+      if (!apiEndpoint) {
+        setTimeout(() => {
+          setMessages((prev) => [
+            ...prev,
+            {
+              type: "received",
+              message: "Thank you for your message. Our team will get back to you shortly!",
+            },
+          ]);
+        }, 1000);
+      }
     }
   };
 
@@ -76,13 +218,44 @@ const ChatWidget = (props: any) => {
     }
   };
 
+  const handleToggle = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (onWidgetToggle) {
+      onWidgetToggle(isOpen);
+    }
+  };
+
+  const generateSessionId = () => {
+    return "session_" + Math.random().toString(36).substr(2, 9);
+  };
+
+  // Verify theme colors before rendering
+  if (!themeColors.primary) {
+    console.error("❌ Theme colors missing primary color:", themeColors);
+    return (
+      <div
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          background: "red",
+          color: "white",
+          padding: "10px",
+          borderRadius: "8px",
+          zIndex: 9999,
+        }}>
+        Theme Error
+      </div>
+    );
+  }
+
   return (
     <>
       <style>{tailwindStyles}</style>
       <ErrorBoundary>
         {/* Widget class is for giving the styles encapsulated to the widget */}
         <div className="fixed bottom-4 right-4 z-1000 widget">
-          <Popover onOpenChange={(isOpen) => setOpen(isOpen)}>
+          <Popover onOpenChange={handleToggle}>
             <PopoverTrigger>
               <Button
                 type="button"
@@ -90,14 +263,14 @@ const ChatWidget = (props: any) => {
                 size="icon"
                 className="rounded-full h-14 w-14 text-white shadow-lg transition-all duration-200 hover:scale-105"
                 style={{
-                  backgroundColor: theme.primary,
+                  backgroundColor: themeColors.primary,
                   color: "white",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = theme.primaryHover;
+                  e.currentTarget.style.backgroundColor = themeColors.primaryHover;
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = theme.primary;
+                  e.currentTarget.style.backgroundColor = themeColors.primary;
                 }}>
                 {open ? <CloseIcon className="h-6 w-6" /> : <MessageIcon className="h-6 w-6" />}
               </Button>
@@ -112,7 +285,7 @@ const ChatWidget = (props: any) => {
                 maxWidth: WidgetConfig.width,
                 width: WidgetConfig.width,
                 borderRadius: "16px",
-                backgroundColor: theme.background,
+                backgroundColor: themeColors.background,
               }}>
               <style>{tailwindStyles}</style>
 
@@ -120,7 +293,7 @@ const ChatWidget = (props: any) => {
               <div
                 className="text-white p-4 rounded-t-2xl"
                 style={{
-                  background: `linear-gradient(to right, ${theme.primary}, ${theme.primaryHover})`,
+                  background: `linear-gradient(to right, ${themeColors.primary}, ${themeColors.primaryHover})`,
                 }}>
                 <div className="flex items-center space-x-3">
                   <div
@@ -144,11 +317,16 @@ const ChatWidget = (props: any) => {
                 style={{
                   height: WidgetConfig.height - 140,
                   maxWidth: WidgetConfig.width,
-                  backgroundColor: theme.secondary,
+                  backgroundColor: themeColors.secondary,
                 }}>
                 <div className="p-4 flex flex-col space-y-3">
                   {messages.map((msg, index) => (
-                    <ChatBubble key={index} type={msg.type} message={msg.message} />
+                    <ChatBubble
+                      key={index}
+                      type={msg.type}
+                      message={msg.message}
+                      theme={WidgetConfig}
+                    />
                   ))}
                 </div>
               </div>
@@ -157,8 +335,8 @@ const ChatWidget = (props: any) => {
               <div
                 className="border-t p-3 rounded-b-2xl"
                 style={{
-                  backgroundColor: theme.background,
-                  borderTopColor: theme.border,
+                  backgroundColor: themeColors.background,
+                  borderTopColor: themeColors.border,
                 }}>
                 <div className="flex items-end space-x-2">
                   <TextareaAutosize
@@ -170,16 +348,16 @@ const ChatWidget = (props: any) => {
                     minRows={1}
                     maxRows={3}
                     style={{
-                      border: `1px solid ${theme.border}`,
-                      backgroundColor: theme.background,
-                      color: theme.text,
+                      border: `1px solid ${themeColors.border}`,
+                      backgroundColor: themeColors.background,
+                      color: themeColors.text,
                     }}
                     onFocus={(e) => {
-                      e.target.style.borderColor = theme.primary;
-                      e.target.style.boxShadow = `0 0 0 2px ${theme.primary}20`;
+                      e.target.style.borderColor = themeColors.primary;
+                      e.target.style.boxShadow = `0 0 0 2px ${themeColors.primary}20`;
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = theme.border;
+                      e.target.style.borderColor = themeColors.border;
                       e.target.style.boxShadow = "none";
                     }}
                   />
@@ -189,23 +367,27 @@ const ChatWidget = (props: any) => {
                     className="rounded-lg p-2 transition-colors duration-200"
                     size="sm"
                     style={{
-                      backgroundColor: message.trim() ? theme.primary : theme.textSecondary,
+                      backgroundColor: message.trim()
+                        ? themeColors.primary
+                        : themeColors.textSecondary,
                       color: "white",
                     }}
                     onMouseEnter={(e) => {
                       if (message.trim()) {
-                        e.currentTarget.style.backgroundColor = theme.primaryHover;
+                        e.currentTarget.style.backgroundColor = themeColors.primaryHover;
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (message.trim()) {
-                        e.currentTarget.style.backgroundColor = theme.primary;
+                        e.currentTarget.style.backgroundColor = themeColors.primary;
                       }
                     }}>
                     <SendIcon className="h-4 w-4" />
                   </Button>
                 </div>
-                <p className="text-xs mt-2 text-center" style={{ color: theme.textSecondary }}>
+                <p
+                  className="text-xs mt-2 text-center"
+                  style={{ color: themeColors.textSecondary }}>
                   Powered by {branding.companyName} • {branding.footerText}
                 </p>
               </div>

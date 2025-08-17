@@ -1,16 +1,49 @@
 {
   "name": "queryon-widget",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Customizable chat widget for websites",
+  "main": "dist/index.es.js",
+  "module": "dist/index.es.js",
+  "umd": "dist/chat-widget.js",
   "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:widget": "npm run build && npm run verify-build",
+    "copy-assets": "echo \"No copy needed - chat-widget.js already created by vite\"",
+    "verify-build": "node -e \"const fs=require('fs'); const files=fs.readdirSync('dist/'); console.log('✅ Build files:', files); const chatWidget=fs.existsSync('dist/chat-widget.js'); console.log('✅ chat-widget.js exists:', chatWidget); if(chatWidget) { const stats=fs.statSync('dist/chat-widget.js'); console.log('✅ File size:', Math.round(stats.size/1024) + 'KB'); }\"",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css}\"",
     "preview": "vite preview",
-    "prepare": "husky && husky install"
+    "prepare": "husky && husky install",
+    "deploy:vercel": "vercel --prod",
+    "deploy:netlify": "netlify deploy --prod --dir=dist",
+    "test:serve": "npx http-server dist -p 8080 -c-1",
+    "test:local": "npx http-server . -p 3000 -c-1",
+    "clean": "node -e \"const fs=require('fs'); if(fs.existsSync('dist')) { fs.rmSync('dist', {recursive:true}); console.log('✅ Cleaned dist folder'); }\"",
+    "rebuild": "npm run clean && npm run build:widget"
   },
+  "keywords": [
+    "chat",
+    "widget",
+    "customer-support",
+    "embeddable",
+    "react",
+    "typescript",
+    "customizable"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kapoor08/queryon-widget.git"
+  },
+  "homepage": "https://github.com/kapoor08/queryon-widget#readme",
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
       "eslint --fix",
@@ -52,9 +85,14 @@
     "postcss": "^8.4.41",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.9",
+    "terser": "^5.32.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.0",
     "vite": "^5.4.0",
     "vite-plugin-svgr": "^4.2.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   }
 }
