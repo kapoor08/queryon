@@ -1,3 +1,4 @@
+'use client';
 import {
   AnimatedBadge,
   AnimatedStats,
@@ -6,9 +7,9 @@ import {
   HeroTitle,
   InteractiveDemo,
   ScrollIndicator,
-} from "@/shared/base";
-import { cn } from "@/lib/utils";
-import { useHeroAnimations } from "@/hooks/use-hero-animations";
+} from '@/shared/base';
+import { cn } from '@/lib/utils';
+import { useHeroAnimations } from '@/hooks/use-hero-animations';
 
 export function Hero() {
   const {
@@ -36,7 +37,7 @@ export function Hero() {
               linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
             `,
-            backgroundSize: "60px 60px",
+            backgroundSize: '60px 60px',
           }}
         />
 
@@ -44,11 +45,11 @@ export function Hero() {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse will-change-transform" />
         <div
           className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 rounded-full blur-3xl animate-pulse will-change-transform"
-          style={{ animationDelay: "2s" }}
+          style={{ animationDelay: '2s' }}
         />
         <div
           className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-pink-500/5 to-orange-500/5 rounded-full blur-2xl animate-pulse will-change-transform"
-          style={{ animationDelay: "4s" }}
+          style={{ animationDelay: '4s' }}
         />
       </div>
 
@@ -61,10 +62,10 @@ export function Hero() {
           {/* Left Column - Content */}
           <div
             className={cn(
-              "space-y-8 transition-all duration-1000 ease-out",
+              'space-y-8 transition-all duration-1000 ease-out',
               isLoaded
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-10 opacity-0"
+                ? 'translate-x-0 opacity-100'
+                : '-translate-x-10 opacity-0'
             )}
           >
             {/* Animated Badge */}

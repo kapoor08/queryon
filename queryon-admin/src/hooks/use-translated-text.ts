@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import { useTranslation } from "@/contexts";
+import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from '@/contexts';
 
 export function useTranslatedText(originalText: string) {
   const [translatedText, setTranslatedText] = useState(originalText);
@@ -16,7 +16,7 @@ export function useTranslatedText(originalText: string) {
 
   useEffect(() => {
     // Reset to original text if language is English
-    if (currentLanguage === "en") {
+    if (currentLanguage === 'en') {
       setTranslatedText(originalText);
       setIsLoading(false);
       return;
@@ -29,9 +29,12 @@ export function useTranslatedText(originalText: string) {
       return;
     }
 
-    // Check cache first
+    // Check cache first - handle both Map and Object types
     const cacheKey = getCacheKey(originalText, currentLanguage);
-    const cachedTranslation = translationCache.get(cacheKey);
+    const cachedTranslation =
+      translationCache instanceof Map
+        ? translationCache.get(cacheKey)
+        : translationCache[cacheKey];
 
     if (cachedTranslation) {
       setTranslatedText(cachedTranslation);
@@ -47,7 +50,7 @@ export function useTranslatedText(originalText: string) {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.error("Translation error:", error);
+        console.error('Translation error:', error);
         setTranslatedText(originalText);
         setIsLoading(false);
       });

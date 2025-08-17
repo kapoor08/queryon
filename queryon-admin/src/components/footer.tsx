@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { MessageSquare, Twitter, Github, Linkedin, Mail } from "lucide-react";
-import { footerLinks } from "@/data";
-import { TranslatableText } from "@/shared/elements";
+import Link from 'next/link';
+import { MessageSquare, Twitter, Github, Linkedin, Mail } from 'lucide-react';
+import { footerLinks } from '@/data';
+import { TranslatableText } from '@/shared/elements/client';
 
 const Footer = () => {
   return (

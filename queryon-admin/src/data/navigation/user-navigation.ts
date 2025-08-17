@@ -17,132 +17,132 @@ import {
   Paintbrush,
   TestTube,
   Video,
-} from "lucide-react";
+} from 'lucide-react';
 
 export const navigation = [
   {
-    title: "Overview",
+    title: 'Overview',
     items: [
       {
-        title: "Dashboard",
-        href: "/dashboard",
+        title: 'Dashboard',
+        href: '/user/dashboard',
         icon: LayoutDashboard,
       },
       {
-        title: "Conversations",
-        href: "/dashboard/conversations",
+        title: 'Conversations',
+        href: '/user/conversations',
         icon: MessageSquare,
-        badge: "23",
+        badge: '23',
       },
       {
-        title: "Leads",
-        href: "/dashboard/leads",
+        title: 'Leads',
+        href: '/user/leads',
         icon: UserPlus,
-        badge: "12",
+        badge: '12',
       },
     ],
   },
   {
-    title: "Widget Management",
+    title: 'Widget Management',
     items: [
       {
-        title: "Widgets",
-        href: "/dashboard/widgets",
+        title: 'Widgets',
+        href: '/user/widgets',
         icon: MessageSquare,
       },
       {
-        title: "Customization",
-        href: "/dashboard/customization",
+        title: 'Customization',
+        href: '/user/customizations',
         icon: Palette,
       },
       {
-        title: "Templates",
-        href: "/dashboard/templates",
+        title: 'Templates',
+        href: '/user/templates',
         icon: Layers,
       },
       {
-        title: "A/B Testing",
-        href: "/dashboard/ab-testing",
+        title: 'A/B Testing',
+        href: '/user/ab-testing',
         icon: TestTube,
       },
     ],
   },
   {
-    title: "Automation",
+    title: 'Automation',
     items: [
       {
-        title: "Workflows",
-        href: "/dashboard/workflows",
+        title: 'Workflows',
+        href: '/user/workflows',
         icon: Zap,
       },
       {
-        title: "Knowledge Base",
-        href: "/dashboard/knowledge",
+        title: 'Knowledge Base',
+        href: '/user/knowledge',
         icon: BookOpen,
       },
     ],
   },
   {
-    title: "Integrations",
+    title: 'Integrations',
     items: [
       {
-        title: "Integrations",
-        href: "/dashboard/integrations",
+        title: 'Integrations',
+        href: '/user/integrations',
         icon: Plug,
       },
       {
-        title: "Mobile SDK",
-        href: "/dashboard/mobile",
+        title: 'Mobile SDK',
+        href: '/user/mobile',
         icon: Smartphone,
       },
       {
-        title: "Voice & Video",
-        href: "/dashboard/voice-video",
+        title: 'Voice & Video',
+        href: '/user/voice-video',
         icon: Video,
       },
     ],
   },
   {
-    title: "Management",
+    title: 'Management',
     items: [
       {
-        title: "Team",
-        href: "/dashboard/team",
+        title: 'Team',
+        href: '/user/team',
         icon: Users,
       },
       {
-        title: "Performance",
-        href: "/dashboard/performance",
+        title: 'Performance',
+        href: '/user/performance',
         icon: Activity,
       },
       {
-        title: "Compliance",
-        href: "/dashboard/compliance",
+        title: 'Compliance',
+        href: '/user/compliance',
         icon: Shield,
       },
       {
-        title: "White Label",
-        href: "/dashboard/white-label",
+        title: 'White Label',
+        href: '/user/white-label',
         icon: Paintbrush,
       },
     ],
   },
   {
-    title: "Account",
+    title: 'Account',
     items: [
       {
-        title: "Billing",
-        href: "/dashboard/billing",
+        title: 'Billing',
+        href: '/user/billing',
         icon: CreditCard,
       },
       {
-        title: "Notifications",
-        href: "/dashboard/notifications",
+        title: 'Notifications',
+        href: '/user/notifications',
         icon: Bell,
       },
       {
-        title: "Help Center",
-        href: "/dashboard/help",
+        title: 'Help Center',
+        href: '/user/help',
         icon: HelpCircle,
       },
     ],

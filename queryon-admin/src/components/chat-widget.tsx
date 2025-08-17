@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import ChatBubble from "./chat-bubble";
-import { SAMPLE_MESSAGES } from "@/data";
-import { ErrorBoundary } from "@/providers";
-import { ThemeConfig } from "@/types/theme";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useChatMessages, useChatPosition } from "@/hooks";
-import { SendIcon, MessageIcon, CloseIcon } from "./icons";
-import { TranslatableText } from "@/shared/elements";
+} from '@/components/ui/popover';
+import ChatBubble from './chat-bubble';
+import { SAMPLE_MESSAGES } from '@/data';
+import { ErrorBoundary } from '@/providers';
+import { ThemeConfig } from '@/types/theme';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useChatMessages, useChatPosition } from '@/hooks';
+import { SendIcon, MessageIcon, CloseIcon } from './icons';
+import { TranslatableText } from '@/shared/elements/client';
 
 interface IChatWidget {
   theme: ThemeConfig;
-  position?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
+  position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
   showNotificationBadge?: boolean;
   unreadCount?: number;
   isPreview?: boolean;
@@ -26,7 +26,7 @@ interface IChatWidget {
 
 const ChatWidget = ({
   theme,
-  position = "bottom-right",
+  position = 'bottom-right',
   showNotificationBadge = false,
   unreadCount = 0,
   isPreview = false,
@@ -46,7 +46,7 @@ const ChatWidget = ({
   );
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage(message);
     }
@@ -63,7 +63,7 @@ const ChatWidget = ({
                 className="w-14 h-14 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 border-0"
                 style={{
                   backgroundColor: theme?.colors?.primary,
-                  color: "white",
+                  color: 'white',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor =
@@ -84,7 +84,7 @@ const ChatWidget = ({
               {/* Notification Badge */}
               {showNotificationBadge && unreadCount > 0 && !open && (
                 <Badge className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs font-bold bg-red-500 text-white border-2 border-white animate-pulse">
-                  {unreadCount > 9 ? "9+" : unreadCount}
+                  {unreadCount > 9 ? '9+' : unreadCount}
                 </Badge>
               )}
             </div>
@@ -97,7 +97,7 @@ const ChatWidget = ({
             sideOffset={15}
             style={{
               width: theme?.width,
-              borderRadius: "16px",
+              borderRadius: '16px',
               backgroundColor: theme?.colors?.background,
             }}
           >
@@ -112,7 +112,7 @@ const ChatWidget = ({
                 <div className="flex items-center space-x-3">
                   <div
                     className="w-10 h-10 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
                   >
                     <MessageIcon className="h-5 w-5" />
                   </div>
@@ -173,11 +173,11 @@ const ChatWidget = ({
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                       <div
                         className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.1s" }}
+                        style={{ animationDelay: '0.1s' }}
                       ></div>
                       <div
                         className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.2s" }}
+                        style={{ animationDelay: '0.2s' }}
                       ></div>
                     </div>
                   </div>
@@ -213,7 +213,7 @@ const ChatWidget = ({
                   }}
                   onBlur={(e) => {
                     e.target.style.borderColor = theme?.colors?.border;
-                    e.target.style.boxShadow = "none";
+                    e.target.style.boxShadow = 'none';
                   }}
                 />
 
@@ -226,7 +226,7 @@ const ChatWidget = ({
                     backgroundColor: message.trim()
                       ? theme?.colors?.primary
                       : theme?.colors?.textSecondary,
-                    color: "white",
+                    color: 'white',
                   }}
                   onMouseEnter={(e) => {
                     if (message.trim()) {
