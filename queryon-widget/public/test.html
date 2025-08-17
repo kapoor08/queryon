@@ -1,16 +1,382 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Queryon Chat Widget - Test Examples</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Embbeded Widget</title>
-</head>
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
 
-<body>
+      h1 {
+        color: #2d3748;
+        text-align: center;
+        margin-bottom: 40px;
+      }
 
-  <chat-widget></chat-widget>
-  <script type="module" src="/dist/index.umd.js"></script>
-</body>
+      .demo-section {
+        margin-bottom: 60px;
+        padding: 30px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        background: #f8fafc;
+      }
 
+      .demo-title {
+        color: #4a5568;
+        font-size: 24px;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      .demo-description {
+        color: #718096;
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+
+      .code-block {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        overflow-x: auto;
+        margin-bottom: 20px;
+      }
+
+      .activate-btn {
+        background: #4299e1;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+
+      .activate-btn:hover {
+        background: #3182ce;
+        transform: translateY(-1px);
+      }
+
+      .activate-btn:disabled {
+        background: #a0aec0;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .active-demo {
+        border-color: #48bb78;
+        background: #f0fff4;
+      }
+
+      .widget-info {
+        background: #bee3f8;
+        border: 1px solid #90cdf4;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 20px;
+      }
+
+      .toggle-all {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .toggle-all button {
+        background: #805ad5;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        margin: 0 10px;
+      }
+
+      .toggle-all button:hover {
+        background: #6b46c1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🚀 Queryon Chat Widget - Live Demo</h1>
+
+      <div class="toggle-all">
+        <button onclick="activateDemo('ecommerce')">E-commerce Demo</button>
+        <button onclick="activateDemo('saas')">SaaS Demo</button>
+        <button onclick="activateDemo('healthcare')">Healthcare Demo</button>
+        <button onclick="activateDemo('creative')">Creative Demo</button>
+        <button onclick="clearAllDemos()">Clear All</button>
+      </div>
+
+      <!-- E-commerce Example -->
+      <div class="demo-section" id="demo-ecommerce">
+        <div class="demo-title">🛒 E-commerce Store</div>
+        <div class="demo-description">
+          Perfect for online stores with customer service focus. Features corporate blue theme with
+          shopping-focused messaging.
+        </div>
+        <div class="code-block">
+          &lt;chat-widget theme="corporate-blue" company-name="ShopMart" support-title="Customer
+          Service" support-subtitle="Shopping assistance" placeholder="Ask about products, orders,
+          or returns..." footer-text="Average response time: 2 minutes" position="bottom-right"&gt;
+          &lt;/chat-widget&gt;
+        </div>
+        <button class="activate-btn" onclick="activateDemo('ecommerce')">
+          Activate E-commerce Widget
+        </button>
+        <div class="widget-info" style="display: none">
+          ✅ Widget active! Check the bottom-right corner.
+        </div>
+      </div>
+
+      <!-- SaaS Example -->
+      <div class="demo-section" id="demo-saas">
+        <div class="demo-title">💻 SaaS Application</div>
+        <div class="demo-description">
+          Modern tech theme perfect for software companies. Includes API integration examples for
+          real-time support.
+        </div>
+        <div class="code-block">
+          &lt;chat-widget theme="silicon-valley" company-name="TechFlow" support-title="Technical
+          Support" support-subtitle="Get help with your account" placeholder="Describe your
+          issue..." footer-text="Our engineers are standing by" position="bottom-left"
+          api-endpoint="https://api.techflow.com/support"
+          webhook-url="https://hooks.techflow.com/chat-notify"&gt; &lt;/chat-widget&gt;
+        </div>
+        <button class="activate-btn" onclick="activateDemo('saas')">Activate SaaS Widget</button>
+        <div class="widget-info" style="display: none">
+          ✅ Widget active! Check the bottom-left corner.
+        </div>
+      </div>
+
+      <!-- Healthcare Example -->
+      <div class="demo-section" id="demo-healthcare">
+        <div class="demo-title">🏥 Healthcare Platform</div>
+        <div class="demo-description">
+          Clean, trustworthy design for healthcare applications. Emphasizes privacy and professional
+          support.
+        </div>
+        <div class="code-block">
+          &lt;chat-widget theme="medical" company-name="HealthCare Plus" support-title="Patient
+          Support" support-subtitle="Confidential assistance" placeholder="How can we help with your
+          care?" footer-text="HIPAA compliant conversations" width="380" height="550"
+          position="top-right"&gt; &lt;/chat-widget&gt;
+        </div>
+        <button class="activate-btn" onclick="activateDemo('healthcare')">
+          Activate Healthcare Widget
+        </button>
+        <div class="widget-info" style="display: none">
+          ✅ Widget active! Check the top-right corner.
+        </div>
+      </div>
+
+      <!-- Creative Agency Example -->
+      <div class="demo-section" id="demo-creative">
+        <div class="demo-title">🎨 Creative Agency</div>
+        <div class="demo-description">
+          Vibrant, artistic theme perfect for design agencies and creative services. Includes custom
+          styling options.
+        </div>
+        <div class="code-block">
+          &lt;chat-widget theme="creative-studio" company-name="Design Co" support-title="Creative
+          Team" support-subtitle="Let's bring ideas to life" placeholder="Tell us about your
+          project..." footer-text="Creative solutions incoming" position="top-left"
+          custom-styles='{"borderRadius":"20px","boxShadow":"0 15px 35px rgba(139,92,246,0.3)"}'&gt;
+          &lt;/chat-widget&gt;
+        </div>
+        <button class="activate-btn" onclick="activateDemo('creative')">
+          Activate Creative Widget
+        </button>
+        <div class="widget-info" style="display: none">
+          ✅ Widget active! Check the top-left corner.
+        </div>
+      </div>
+
+      <!-- Gaming Example -->
+      <div class="demo-section" id="demo-gaming">
+        <div class="demo-title">🎮 Gaming Platform</div>
+        <div class="demo-description">
+          Dark, energetic theme perfect for gaming platforms and entertainment sites.
+        </div>
+        <div class="code-block">
+          &lt;chat-widget theme="gaming" company-name="GameHub" support-title="Player Support"
+          support-subtitle="Game on!" placeholder="What's the quest?" footer-text="24/7 gaming
+          support" width="400" height="600"&gt; &lt;/chat-widget&gt;
+        </div>
+        <button class="activate-btn" onclick="activateDemo('gaming')">
+          Activate Gaming Widget
+        </button>
+        <div class="widget-info" style="display: none">
+          ✅ Widget active! Check the bottom-right corner.
+        </div>
+      </div>
+
+      <!-- Fintech Example -->
+      <div class="demo-section" id="demo-fintech">
+        <div class="demo-title">💰 Fintech Application</div>
+        <div class="demo-description">
+          Professional financial theme with trust and security focus.
+        </div>
+        <div class="code-block">
+          &lt;chat-widget theme="fintech" company-name="FinanceFlow" support-title="Financial
+          Support" support-subtitle="Your money matters" placeholder="Ask about finances..."
+          footer-text="Secure and confidential"&gt; &lt;/chat-widget&gt;
+        </div>
+        <button class="activate-btn" onclick="activateDemo('fintech')">
+          Activate Fintech Widget
+        </button>
+        <div class="widget-info" style="display: none">
+          ✅ Widget active! Check the bottom-right corner.
+        </div>
+      </div>
+    </div>
+
+    <!-- Load the widget script -->
+    <script src="/dist/chat-widget.js"></script>
+
+    <script>
+      let currentWidget = null;
+
+      function activateDemo(demoType) {
+        // Clear any existing widget
+        clearAllDemos();
+
+        // Reset all demo sections
+        document.querySelectorAll(".demo-section").forEach((section) => {
+          section.classList.remove("active-demo");
+          const info = section.querySelector(".widget-info");
+          const btn = section.querySelector(".activate-btn");
+          if (info) info.style.display = "none";
+          if (btn) btn.disabled = false;
+        });
+
+        // Create new widget based on demo type
+        const widgetConfigs = {
+          ecommerce: {
+            theme: "corporate-blue",
+            "company-name": "ShopMart",
+            "support-title": "Customer Service",
+            "support-subtitle": "Shopping assistance",
+            placeholder: "Ask about products, orders, or returns...",
+            "footer-text": "Average response time: 2 minutes",
+            position: "bottom-right",
+          },
+          saas: {
+            theme: "silicon-valley",
+            "company-name": "TechFlow",
+            "support-title": "Technical Support",
+            "support-subtitle": "Get help with your account",
+            placeholder: "Describe your issue...",
+            "footer-text": "Our engineers are standing by",
+            position: "bottom-left",
+          },
+          healthcare: {
+            theme: "medical",
+            "company-name": "HealthCare Plus",
+            "support-title": "Patient Support",
+            "support-subtitle": "Confidential assistance",
+            placeholder: "How can we help with your care?",
+            "footer-text": "HIPAA compliant conversations",
+            width: "380",
+            height: "550",
+            position: "top-right",
+          },
+          creative: {
+            theme: "creative-studio",
+            "company-name": "Design Co",
+            "support-title": "Creative Team",
+            "support-subtitle": "Let's bring ideas to life",
+            placeholder: "Tell us about your project...",
+            "footer-text": "Creative solutions incoming",
+            position: "top-left",
+            "custom-styles":
+              '{"borderRadius":"20px","boxShadow":"0 15px 35px rgba(139,92,246,0.3)"}',
+          },
+          gaming: {
+            theme: "gaming",
+            "company-name": "GameHub",
+            "support-title": "Player Support",
+            "support-subtitle": "Game on!",
+            placeholder: "What's the quest?",
+            "footer-text": "24/7 gaming support",
+            width: "400",
+            height: "600",
+          },
+          fintech: {
+            theme: "fintech",
+            "company-name": "FinanceFlow",
+            "support-title": "Financial Support",
+            "support-subtitle": "Your money matters",
+            placeholder: "Ask about finances...",
+            "footer-text": "Secure and confidential",
+          },
+        };
+
+        const config = widgetConfigs[demoType];
+        if (!config) return;
+
+        // Create widget element
+        const widget = document.createElement("chat-widget");
+        Object.entries(config).forEach(([key, value]) => {
+          widget.setAttribute(key, value);
+        });
+
+        // Add to body
+        document.body.appendChild(widget);
+        currentWidget = widget;
+
+        // Update UI
+        const demoSection = document.getElementById(`demo-${demoType}`);
+        demoSection.classList.add("active-demo");
+        const info = demoSection.querySelector(".widget-info");
+        const btn = demoSection.querySelector(".activate-btn");
+        if (info) info.style.display = "block";
+        if (btn) btn.disabled = true;
+      }
+
+      function clearAllDemos() {
+        if (currentWidget) {
+          currentWidget.remove();
+          currentWidget = null;
+        }
+
+        document.querySelectorAll(".demo-section").forEach((section) => {
+          section.classList.remove("active-demo");
+          const info = section.querySelector(".widget-info");
+          const btn = section.querySelector(".activate-btn");
+          if (info) info.style.display = "none";
+          if (btn) btn.disabled = false;
+        });
+      }
+
+      // Initialize with e-commerce demo
+      document.addEventListener("DOMContentLoaded", function () {
+        // Auto-load first demo after a brief delay
+        setTimeout(() => {
+          activateDemo("ecommerce");
+        }, 1000);
+      });
+    </script>
+  </body>
 </html>

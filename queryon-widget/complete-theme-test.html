@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔧 Widget Debug & Real-time Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f5f7fa;
+      }
+      .debug-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .control-section {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border: 1px solid #e2e8f0;
+      }
+      .control-group {
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .control-group label {
+        min-width: 120px;
+        font-weight: 600;
+        color: #2d3748;
+      }
+      .control-group input,
+      .control-group select {
+        padding: 8px 12px;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+      .update-btn {
+        background: #48bb78;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 5px;
+        font-weight: 500;
+      }
+      .update-btn:hover {
+        background: #38a169;
+      }
+      .debug-btn {
+        background: #4299e1;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 5px;
+        font-size: 12px;
+      }
+      .debug-btn:hover {
+        background: #3182ce;
+      }
+      .theme-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin: 15px 0;
+      }
+      .theme-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .theme-btn:hover {
+        background: #5a67d8;
+      }
+      .theme-btn.active {
+        background: #48bb78;
+      }
+      .debug-output {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 12px;
+        height: 200px;
+        overflow-y: auto;
+        margin: 20px 0;
+      }
+      .status {
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        font-weight: 500;
+      }
+      .success {
+        background: #f0fff4;
+        color: #276749;
+        border: 1px solid #9ae6b4;
+      }
+      .warning {
+        background: #fffaf0;
+        color: #975a16;
+        border: 1px solid #fbd38d;
+      }
+      .error {
+        background: #fed7d7;
+        color: #c53030;
+        border: 1px solid #fc8181;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="debug-container">
+      <h1>🔧 Widget Real-time Debug Test</h1>
+
+      <div id="status" class="status success">✅ Ready to test real-time updates!</div>
+
+      <!-- Widget Controls -->
+      <div class="control-section">
+        <h3>🎛️ Widget Controls</h3>
+
+        <div class="control-group">
+          <label>Theme:</label>
+          <select id="themeSelect">
+            <option value="forest-green">Forest Green</option>
+            <option value="corporate-blue">Corporate Blue</option>
+            <option value="modern-dark">Modern Dark</option>
+            <option value="neon-cyber">Neon Cyber</option>
+            <option value="medical">Medical</option>
+            <option value="gaming">Gaming</option>
+            <option value="elegant-purple">Elegant Purple</option>
+          </select>
+          <button class="debug-btn" onclick="updateTheme()">Apply Theme</button>
+        </div>
+
+        <div class="control-group">
+          <label>Company Name:</label>
+          <input type="text" id="companyName" value="Debug Company" onchange="updateBranding()" />
+        </div>
+
+        <div class="control-group">
+          <label>Support Title:</label>
+          <input type="text" id="supportTitle" value="Live Support" onchange="updateBranding()" />
+        </div>
+
+        <div class="control-group">
+          <label>Support Subtitle:</label>
+          <input
+            type="text"
+            id="supportSubtitle"
+            value="Debug mode active"
+            onchange="updateBranding()"
+          />
+        </div>
+
+        <div class="control-group">
+          <label>Position:</label>
+          <select id="position" onchange="updatePosition()">
+            <option value="bottom-right">Bottom Right</option>
+            <option value="bottom-left">Bottom Left</option>
+            <option value="top-right">Top Right</option>
+            <option value="top-left">Top Left</option>
+            <option value="center-right">Center Right</option>
+            <option value="center-left">Center Left</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Size:</label>
+          <input
+            type="number"
+            id="width"
+            value="360"
+            min="300"
+            max="500"
+            onchange="updateSize()"
+            style="width: 80px"
+          />
+          <span>×</span>
+          <input
+            type="number"
+            id="height"
+            value="500"
+            min="400"
+            max="700"
+            onchange="updateSize()"
+            style="width: 80px"
+          />
+        </div>
+
+        <div class="control-group">
+          <label>Primary Color:</label>
+          <input type="color" id="primaryColor" value="#059669" onchange="updateColors()" />
+          <input
+            type="text"
+            id="primaryColorText"
+            value="#059669"
+            onchange="updateColors()"
+            style="width: 100px"
+          />
+        </div>
+
+        <div class="control-group">
+          <label>Secondary Color:</label>
+          <input type="color" id="secondaryColor" value="#f0fdf4" onchange="updateColors()" />
+          <input
+            type="text"
+            id="secondaryColorText"
+            value="#f0fdf4"
+            onchange="updateColors()"
+            style="width: 100px"
+          />
+        </div>
+      </div>
+
+      <!-- Update Buttons -->
+      <div class="control-section">
+        <h3>🔄 Update Actions</h3>
+        <button class="update-btn" onclick="updateAll()">Update All</button>
+        <button class="update-btn" onclick="updateBranding()">Update Branding</button>
+        <button class="update-btn" onclick="updateColors()">Update Colors</button>
+        <button class="update-btn" onclick="updatePosition()">Update Position</button>
+        <button class="update-btn" onclick="updateSize()">Update Size</button>
+        <button class="update-btn" onclick="recreateWidget()">Recreate Widget</button>
+      </div>
+
+      <!-- Debug Actions -->
+      <div class="control-section">
+        <h3>🐛 Debug Actions</h3>
+        <button class="debug-btn" onclick="logWidgetState()">Log Widget State</button>
+        <button class="debug-btn" onclick="logAttributes()">Log Attributes</button>
+        <button class="debug-btn" onclick="forceUpdate()">Force Update</button>
+        <button class="debug-btn" onclick="clearDebugLog()">Clear Log</button>
+        <button class="debug-btn" onclick="testRapidUpdates()">Test Rapid Updates</button>
+      </div>
+
+      <!-- Debug Output -->
+      <div class="control-section">
+        <h3>📊 Debug Log</h3>
+        <div id="debugLog" class="debug-output">Debug log will appear here...</div>
+      </div>
+    </div>
+
+    <!-- Load the widget script -->
+    <script src="./dist/chat-widget.js"></script>
+
+    <script>
+      let currentWidget = null;
+      let debugLog = [];
+
+      function log(message, type = "info") {
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = `[${timestamp}] ${message}`;
+        debugLog.push(logEntry);
+
+        const logElement = document.getElementById("debugLog");
+        logElement.innerHTML = debugLog.slice(-20).join("\n"); // Show last 20 entries
+        logElement.scrollTop = logElement.scrollHeight;
+
+        console.log(logEntry);
+      }
+
+      function createWidget() {
+        if (currentWidget) {
+          currentWidget.remove();
+        }
+
+        const widget = document.createElement("chat-widget");
+        widget.setAttribute("theme", "forest-green");
+        widget.setAttribute("company-name", "Debug Company");
+        widget.setAttribute("support-title", "Live Support");
+        widget.setAttribute("support-subtitle", "Debug mode active");
+        widget.setAttribute("position", "bottom-right");
+        widget.setAttribute("width", "360");
+        widget.setAttribute("height", "500");
+        widget.setAttribute("primary-color", "#059669");
+        widget.setAttribute("secondary-color", "#f0fdf4");
+
+        document.body.appendChild(widget);
+        currentWidget = widget;
+
+        log("✅ Widget created with initial configuration");
+        return widget;
+      }
+
+      function updateTheme() {
+        if (!currentWidget) return;
+
+        const theme = document.getElementById("themeSelect").value;
+        currentWidget.setAttribute("theme", theme);
+        log(`🎨 Theme updated to: ${theme}`);
+      }
+
+      function updateBranding() {
+        if (!currentWidget) return;
+
+        const companyName = document.getElementById("companyName").value;
+        const supportTitle = document.getElementById("supportTitle").value;
+        const supportSubtitle = document.getElementById("supportSubtitle").value;
+
+        currentWidget.setAttribute("company-name", companyName);
+        currentWidget.setAttribute("support-title", supportTitle);
+        currentWidget.setAttribute("support-subtitle", supportSubtitle);
+
+        log(`🏷️ Branding updated: ${companyName} | ${supportTitle} | ${supportSubtitle}`);
+      }
+
+      function updatePosition() {
+        if (!currentWidget) return;
+
+        const position = document.getElementById("position").value;
+        currentWidget.setAttribute("position", position);
+        log(`📍 Position updated to: ${position}`);
+      }
+
+      function updateSize() {
+        if (!currentWidget) return;
+
+        const width = document.getElementById("width").value;
+        const height = document.getElementById("height").value;
+
+        currentWidget.setAttribute("width", width);
+        currentWidget.setAttribute("height", height);
+        log(`📐 Size updated to: ${width}x${height}`);
+      }
+
+      function updateColors() {
+        if (!currentWidget) return;
+
+        const primaryColor = document.getElementById("primaryColor").value;
+        const secondaryColor = document.getElementById("secondaryColor").value;
+
+        // Sync color inputs
+        document.getElementById("primaryColorText").value = primaryColor;
+        document.getElementById("secondaryColorText").value = secondaryColor;
+
+        currentWidget.setAttribute("primary-color", primaryColor);
+        currentWidget.setAttribute("secondary-color", secondaryColor);
+        log(`🎨 Colors updated: Primary=${primaryColor}, Secondary=${secondaryColor}`);
+      }
+
+      function updateAll() {
+        updateTheme();
+        updateBranding();
+        updatePosition();
+        updateSize();
+        updateColors();
+        log("🔄 All attributes updated");
+      }
+
+      function recreateWidget() {
+        log("🏗️ Recreating widget...");
+        createWidget();
+        updateAll();
+      }
+
+      function logWidgetState() {
+        if (!currentWidget) {
+          log("❌ No widget found");
+          return;
+        }
+
+        log("📊 Widget State:");
+        log(`  - Tag: ${currentWidget.tagName}`);
+        log(`  - Connected: ${currentWidget.isConnected}`);
+        log(`  - Shadow Root: ${currentWidget.shadowRoot ? "Yes" : "No"}`);
+        log(`  - Position: ${currentWidget.style.position}`);
+        log(`  - Bottom: ${currentWidget.style.bottom}`);
+        log(`  - Right: ${currentWidget.style.right}`);
+        log(`  - Left: ${currentWidget.style.left}`);
+        log(`  - Top: ${currentWidget.style.top}`);
+      }
+
+      function logAttributes() {
+        if (!currentWidget) {
+          log("❌ No widget found");
+          return;
+        }
+
+        log("📋 Current Attributes:");
+        for (let i = 0; i < currentWidget.attributes.length; i++) {
+          const attr = currentWidget.attributes[i];
+          log(`  - ${attr.name}: "${attr.value}"`);
+        }
+      }
+
+      function forceUpdate() {
+        if (!currentWidget) {
+          log("❌ No widget found");
+          return;
+        }
+
+        try {
+          // Call the public forceUpdate method if available
+          if (typeof currentWidget.forceUpdate === "function") {
+            currentWidget.forceUpdate();
+            log("🔄 Force update called");
+          } else {
+            // Fallback: trigger attribute change
+            const currentTheme = currentWidget.getAttribute("theme") || "forest-green";
+            currentWidget.setAttribute("theme", currentTheme);
+            log("🔄 Triggered attribute change for force update");
+          }
+        } catch (error) {
+          log(`❌ Force update failed: ${error.message}`);
+        }
+      }
+
+      function clearDebugLog() {
+        debugLog = [];
+        document.getElementById("debugLog").innerHTML = "Debug log cleared...";
+      }
+
+      function testRapidUpdates() {
+        if (!currentWidget) {
+          log("❌ No widget found");
+          return;
+        }
+
+        log("🚀 Starting rapid update test...");
+
+        const positions = ["bottom-right", "bottom-left", "top-right", "top-left"];
+        const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#ffeaa7"];
+
+        let i = 0;
+        const interval = setInterval(() => {
+          if (i >= 10) {
+            clearInterval(interval);
+            log("✅ Rapid update test completed");
+            return;
+          }
+
+          const position = positions[i % positions.length];
+          const color = colors[i % colors.length];
+          const width = 300 + i * 20;
+
+          currentWidget.setAttribute("position", position);
+          currentWidget.setAttribute("primary-color", color);
+          currentWidget.setAttribute("width", width.toString());
+          currentWidget.setAttribute("company-name", `Test ${i + 1}`);
+
+          log(`⚡ Rapid update ${i + 1}: ${position}, ${color}, ${width}px`);
+          i++;
+        }, 500);
+      }
+
+      function syncColorInputs() {
+        // Sync color picker with text input
+        document.getElementById("primaryColor").addEventListener("input", function () {
+          document.getElementById("primaryColorText").value = this.value;
+        });
+
+        document.getElementById("primaryColorText").addEventListener("input", function () {
+          document.getElementById("primaryColor").value = this.value;
+        });
+
+        document.getElementById("secondaryColor").addEventListener("input", function () {
+          document.getElementById("secondaryColorText").value = this.value;
+        });
+
+        document.getElementById("secondaryColorText").addEventListener("input", function () {
+          document.getElementById("secondaryColor").value = this.value;
+        });
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        log("🔧 Debug page loaded");
+        syncColorInputs();
+
+        setTimeout(() => {
+          createWidget();
+          log("🎯 Ready for real-time testing!");
+        }, 1000);
+      });
+
+      // Add error handling
+      window.addEventListener("error", function (e) {
+        log(`💥 JavaScript Error: ${e.message}`);
+      });
+
+      // Monitor widget changes
+      function startMonitoring() {
+        if (!currentWidget) return;
+
+        const observer = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+            if (mutation.type === "attributes") {
+              log(`👀 Observed attribute change: ${mutation.attributeName}`);
+            }
+          });
+        });
+
+        observer.observe(currentWidget, {
+          attributes: true,
+          attributeOldValue: true,
+        });
+
+        log("👁️ Started monitoring widget changes");
+      }
+
+      // Start monitoring after widget is created
+      setTimeout(() => {
+        if (currentWidget) {
+          startMonitoring();
+        }
+      }, 2000);
+    </script>
+  </body>
+</html>
